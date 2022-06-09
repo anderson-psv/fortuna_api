@@ -1,7 +1,7 @@
 <?php
 
 use Fortuna\Mysql;
-use Hcode\Model\Usuario;
+use Fortuna\Model\Usuario;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 $app->post('/usuario/login', Usuario::login(
@@ -15,7 +15,8 @@ $app->post('/usuario/listar', function () {
     if (!$isadmin) {
         throw new Exception("Não autorizado", 7400);
     }
-    $qb = new QueryBuilder(new Mysql());
+
+    $qb = new QueryBuilder((new Mysql())->getDb());
 
     return $qb->select('idusuario', 'email', 'isadmin')
         ->from(Usuario::$tabela_db)
@@ -65,7 +66,7 @@ $app->post('/usuario/getUsuario/:idusuario', function ($idusuario) {
         return;
     }
 
-    $qb = new QueryBuilder(new Mysql());
+    $qb = new QueryBuilder((new Mysql())->getDb());
     return $qb->select('idusuario', 'email', 'isadmin')
         ->from(Usuario::$tabela_db)
         ->fetchAssociative();

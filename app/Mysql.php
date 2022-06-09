@@ -7,9 +7,11 @@ use Doctrine\DBAL\DriverManager;
 
 class Mysql
 {
+    private Connection $db_conn;
+
     function __construct()
     {
-        return new DriverManager(
+        $this->db_conn = DriverManager::getConnection(
             [
                 'driver'   => 'pdo_mysql',
                 'host'     => 'mysql_db_service',
@@ -19,5 +21,10 @@ class Mysql
                 'charset'  => 'utf8'
             ]
         );
-    }    
+    }
+
+    public function getDb():Connection
+    {
+        return $this->db_conn;
+    }
 }

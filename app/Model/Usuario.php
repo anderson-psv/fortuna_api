@@ -1,6 +1,6 @@
 <?php
 
-namespace Hcode\Model;
+namespace Fortuna\Model;
 
 use Exception;
 use Fortuna\Mysql;
@@ -17,7 +17,7 @@ class Usuario
     const SUCCESS        = "UserSuccess";
 
     public static string $tabela_db = 'db_usuario';
-    public static array $campos_db = [
+    public static array $campos_db  = [
         'idusuario',
         'email',
         'senha',
@@ -199,7 +199,7 @@ class Usuario
 
     public static function getFromSession()
     {
-        $usuario = new Usuario();
+        $usuario = new self();
 
         if (isset($_SESSION[self::SESSION]) && (int)$_SESSION[self::SESSION]['idusuario'] > 0) {
             $usuario->setDados($_SESSION[self::SESSION]);
@@ -231,7 +231,8 @@ class Usuario
 
     public static function login($email, $password)
     {
-        $qb = new QueryBuilder(new Mysql());
+        $db = (new Mysql())->getDb();
+        $qb = new QueryBuilder($db);
 
         $db_user = $qb->select(
             'idusuario',
@@ -249,7 +250,7 @@ class Usuario
         }
 
         if (password_verify($password, $db_user["senha"]) === true) {
-            $usuario = new Usuario();
+            $usuario = new self();
 
             $usuario->setDados($db_user);
 
