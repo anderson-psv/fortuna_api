@@ -1,15 +1,15 @@
 <?php
 namespace Fortuna;
 
-use \Slim\Slim;
-
-session_start();
+use Slim\Factory\AppFactory;
 
 require_once("vendor/autoload.php");
 
-$app = new Slim();
+session_start();
 
-$app->config('debug', true);
+$app = AppFactory::create();
+
+#$app->config('debug', true);
 
 require_once("Controller/UsuarioController.php");
 

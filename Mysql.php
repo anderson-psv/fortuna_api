@@ -15,7 +15,7 @@ class Mysql
                 'host'     => 'mysql_db_service',
                 'dbname'   => 'db_fortuna',
                 'user'     => 'root',
-                'password' => '',
+                'password' => 'some_root_password_should_be_here',
                 'charset'  => 'utf8'
             ]
         );
