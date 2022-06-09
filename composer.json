@@ -1,12 +1,19 @@
 {
-    "require-dev": {
+    "config": {
+        "platform": {
+            "php": "7.4.29"
+        }
+    },
+    "require": {
+        "php": "^7.4",
         "doctrine/dbal": "3.3.6",
     	"phpmailer/phpmailer":"5.2.22",
-        "slim/slim": "4.10.0"
+        "slim/psr7": "^1.5",
+        "slim/slim": "^4.10"
     },
     "autoload": {
         "psr-4": {
-            "Fortuna\\": "."
+            "App\\": "app/"
         }
     }
 }
