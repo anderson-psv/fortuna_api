@@ -30,4 +30,15 @@ services:
       - "3359:3306"
     environment:
       MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: some_root_password_should_be_here
+      MYSQL_ROOT_PASSWORD: root-fortuna
+
+  phpmyadmin:
+   image: phpmyadmin/phpmyadmin
+   container_name: "phpmyadmin-fortuna"
+   ports:
+     - 8084:80
+   environment:
+     PMA_HOST: db-mysql
+   restart: always
+   depends_on:
+     - db-mysql

@@ -14,10 +14,10 @@ class Mysql
         $this->db_conn = DriverManager::getConnection(
             [
                 'driver'   => 'pdo_mysql',
-                'host'     => 'mysql_db_service',
+                'host'     => 'db-mysql',
                 'dbname'   => 'db_fortuna',
                 'user'     => 'root',
-                'password' => 'some_root_password_should_be_here',
+                'password' => 'root-fortuna',
                 'charset'  => 'utf8'
             ]
         );
