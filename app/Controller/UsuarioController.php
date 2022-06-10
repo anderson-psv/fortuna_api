@@ -15,11 +15,21 @@ class UsuarioController
 {
     public static function getRoutes(App $app)
     {
-        $app->get('/teste', function(Request $request, Response $response) {
-            return 'teste';
+        $app->post('/teste', function (Request $request, Response $response, $args) {
+            #$request->getBody()->getContents();
+            $response->getBody()->write(json_encode([
+                'uno',
+                'dos',
+                'tres'
+            ], JSON_PRETTY_PRINT));
+
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(201);
+
         });
 
-        $app->post('/usuario/login', function() {
+        $app->post('/usuario/login', function () {
             Usuario::login(
                 $_POST['email'],
                 $_POST['senha']

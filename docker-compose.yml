@@ -10,7 +10,7 @@ services:
     working_dir: /composer
     command: bash -c "chmod -R 777 . && composer install --dev && composer dump-autoload"
 
-  php-apache-srv:
+  apache:
     build: .
     image: php7.4-apache-server
     container_name: php-server-fortuna
