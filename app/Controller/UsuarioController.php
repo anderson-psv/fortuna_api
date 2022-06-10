@@ -29,11 +29,36 @@ class UsuarioController
 
         });
 
-        $app->post('/usuario/login', function () {
-            Usuario::login(
-                $_POST['email'],
-                $_POST['senha']
-            );
+        $app->post('/usuario/login', function (Request $request, Response $response, $args) {
+            $dados = json_decode($request->getBody()->getContents(), true);
+
+            try {
+                $usuario = Usuario::login(
+                    $dados['email'],
+                    $dados['senha']
+                );
+            } catch (\Throwable $th) {
+                $response->getBody()->write(json_encode([
+                    'error' => $th->getMessage()
+                ]));
+
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(400);
+            }
+           
+
+            if($usuario) {
+                $response->getBody()->write(json_encode($usuario));
+                return $response->withStatus(200);
+            }
+
+            $response->getBody()->write(json_encode([
+                'message' => 'Usuário ou senha inválidos!'
+            ]));
+
+            return $response
+                ->withStatus(404);
         });
 
         $app->post('/usuario/listar', function () {
