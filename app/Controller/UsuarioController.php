@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UsuarioController
 {
-    public static function getRoutes(App $app)
+    public static function register(App $app)
     {
         $app->post('/teste', function (Request $request, Response $response, $args) {
             #$request->getBody()->getContents();
