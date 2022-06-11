@@ -15,6 +15,7 @@ if ($files = opendir('app/Routes/')) {
 
     if (getenv('DEBUG') == 1) {
         $app->add(function (Request $request, RequestHandler $handler) {
+            $response = $handler->handle($request);
             (new Logger)->debug('New Request', [
                 'method'  => $request->getMethod(),
                 'path'     => (string) $request->getUri()->getPath(),
@@ -22,7 +23,7 @@ if ($files = opendir('app/Routes/')) {
                 #'body'    => $request->getBody()->getContents()
             ]);
 
-            return new Response();
+            return $response;
         });
     }
 
