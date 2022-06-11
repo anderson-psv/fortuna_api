@@ -1,0 +1,131 @@
+body, ul, li, p{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    font-size: 1.2rem;
+    font-family: Arial;
+}
+
+.header {
+    background-color: #f2f2f2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.25);
+    position: fixed;
+    width: 100%;
+}
+
+.menu {
+    display: flex;
+    margin: 0px 10px 0px 10px;
+}
+
+.li {
+    margin-left: 10px;
+}
+
+.menu, a {
+    color: #30110d;
+    text-decoration: none;
+}
+.menu, li {
+    display: inline;
+    padding: 10px;
+
+}
+
+.banner img {
+    max-width: 100%;
+    padding-top: 150px;
+    display: block;
+    margin: auto;
+
+}
+.home-row {
+    display: flex;
+    justify-content: space-around;
+    margin: 100px 0px 100px 0px;
+
+}
+
+.coluna1 {
+    display: flex;
+    padding: 0px 0px 0px 50px;
+    box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.25);
+    border-radius: 5px;
+    
+}
+
+.coluna2 {
+    display: flex;
+    padding: 0px 0px 0px 50px;
+    box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.25);
+    border-radius: 5px;
+    
+}
+
+.texto {
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+}
+
+.imagem {
+    padding: 0px;
+}
+
+.row-imagens {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 50px;
+}
+
+.row {
+    padding-top: 350px;
+    height: 535px;
+    border: 1px solid #30110d;
+    justify-content: center;
+    color: black;
+    text-align: center;
+}
+
+.dados {
+    padding: 10px;
+    display: grid;
+}
+
+.footer {
+    height: 50px;
+    background-color: #722620;
+}
+
+.grupo {
+    color: #f2f2f2;
+    text-align: center;
+    padding-top: 15px;font-size: 1.2rem;
+}
+
+.row-sobre{
+    display: flex;
+    padding: 254px 200px 100px 200px;
+    justify-content: space-around;
+    box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.25);
+}
+
+.coluna-sobre1 {
+    margin: auto;
+    text-align: center;
+}
+
+#imgsobre{
+    border-radius: 5px;
+}
+
+.texto-sobre {
+    margin: auto;
+    padding: 0px 45px 0px 45px;
+    text-align: justify;
+}

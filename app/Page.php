@@ -9,8 +9,8 @@ class Page
     private $tpl;
     private $options  = [];
     private $defaults = [
-        "header" => false,
-        "footer" => false,
+        "header" => true,
+        "footer" => true,
         "data" => []
     ];
 
