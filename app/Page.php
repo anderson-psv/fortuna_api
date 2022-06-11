@@ -3,6 +3,7 @@
 namespace Fortuna;
 
 use Rain\Tpl;
+use Fortuna\Model\Usuario;
 
 class Page
 {
@@ -11,29 +12,31 @@ class Page
     private $defaults = [
         "header" => true,
         "footer" => true,
-        "data" => []
+        "data"   => []
     ];
 
     public function __construct($opts = array(), $tpl_dir = '/views/')
     {
+        $opts['data']['usuario_logado'] = Usuario::checklogin();
+
         $this->options = array_merge($this->defaults, $opts);
 
         $config = array(
-            "tpl_dir"   =>dirname(__DIR__).$tpl_dir,
-            "cache_dir" =>dirname(__DIR__)."/views-cache/",
+            "tpl_dir"   => dirname(__DIR__) . $tpl_dir,
+            "cache_dir" => dirname(__DIR__) . "/views-cache/",
             "debug"     => false,
         );
 
-        Tpl::configure( $config );
+        Tpl::configure($config);
 
         $this->tpl = new Tpl;
 
         $this->setData($this->options['data']);
 
-        if($this->options['header'] === true) $this->tpl->draw('header');
+        if ($this->options['header'] === true) $this->tpl->draw('header');
     }
 
-    
+
     private function setData($data = array())
     {
         foreach ($data as $key => $value) {
@@ -41,7 +44,7 @@ class Page
         }
     }
 
-    public function setTpl($name ,$data = array(), $returnHTML = false)
+    public function setTpl($name, $data = array(), $returnHTML = false)
     {
         $this->setData($data);
 
@@ -50,6 +53,6 @@ class Page
 
     public function __destruct()
     {
-        if($this->options['footer'] === true) $this->tpl->draw("footer");
+        if ($this->options['footer'] === true) $this->tpl->draw("footer");
     }
 }
