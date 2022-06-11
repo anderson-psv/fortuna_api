@@ -5,18 +5,62 @@ use Fortuna\Page;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$app->get('/', function(Request $request, Response $response, $args) {
+$app->get('/', function (Request $request, Response $response, $args) {
+	#$params = $request->getQueryParams();
+	#$body   = $request->getBody()->getContents();
+
+	$page = new Page([
+		'data' => [
+			'site_titulo' => 'Home'
+		]
+	]);
+
+	$page->setTpl("index");
+
+	return $response->withStatus(200);
+});
+
+$app->get('/sobre', function (Request $request, Response $response, $args) {
 	$params = $request->getQueryParams();
 	$body   = $request->getBody()->getContents();
 
-	$page = new Page();
-	$page->setTpl("index", [
-	    "teste" => [
-            'chave1' =>'um',
-			'chave2' =>'dois',
-			'chave3' =>'tres'
-        ]
+	$page = new Page([
+		'data' => [
+			'site_titulo' => 'Sobre'
+		]
 	]);
 
-    return $response->withStatus(200);
+	$page->setTpl("sobre");
+
+	return $response->withStatus(200);
+});
+
+$app->get('/produtos', function (Request $request, Response $response, $args) {
+	$params = $request->getQueryParams();
+	$body   = $request->getBody()->getContents();
+
+	$page = new Page([
+		'data' => [
+			'site_titulo' => 'Produtos'
+		]
+	]);
+
+	$page->setTpl("produtos");
+
+	return $response->withStatus(200);
+});
+
+$app->get('/contato', function (Request $request, Response $response, $args) {
+	$params = $request->getQueryParams();
+	$body   = $request->getBody()->getContents();
+
+	$page = new Page([
+		'data' => [
+			'site_titulo' => 'Contato'
+		]
+	]);
+
+	$page->setTpl("contato");
+
+	return $response->withStatus(200);
 });
