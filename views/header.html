@@ -17,6 +17,11 @@
                  <li><a href="/sobre">Sobre</a></li>
                  <li><a href="/produtos">Produtos</a></li>
                  <li><a href="/contato">Contato</a></li>
+                 {if="$usuario_logado"}
+                    <li><a href="/login">Logout</a></li>
+                 {else}
+                    <li><a href="/logout">Login</a></li>
+                 {/if}
              </ul>
          </nav>
      </header>
