@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $app->get('/', function (Request $request, Response $response, $args) {
 	#$params = $request->getQueryParams();
 	#$body   = $request->getBody()->getContents();
-
 	$page = new Page([
 		'data' => [
 			'site_titulo' => 'Home'
@@ -21,9 +20,6 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/sobre', function (Request $request, Response $response, $args) {
-	$params = $request->getQueryParams();
-	$body   = $request->getBody()->getContents();
-
 	$page = new Page([
 		'data' => [
 			'site_titulo' => 'Sobre'
@@ -36,9 +32,6 @@ $app->get('/sobre', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/produtos', function (Request $request, Response $response, $args) {
-	$params = $request->getQueryParams();
-	$body   = $request->getBody()->getContents();
-
 	$page = new Page([
 		'data' => [
 			'site_titulo' => 'Produtos'
@@ -51,9 +44,6 @@ $app->get('/produtos', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/contato', function (Request $request, Response $response, $args) {
-	$params = $request->getQueryParams();
-	$body   = $request->getBody()->getContents();
-
 	$page = new Page([
 		'data' => [
 			'site_titulo' => 'Contato'
@@ -61,6 +51,18 @@ $app->get('/contato', function (Request $request, Response $response, $args) {
 	]);
 
 	$page->setTpl("contato");
+
+	return $response->withStatus(200);
+});
+
+$app->get('/login', function (Request $request, Response $response, $args) {
+	$page = new Page([
+		'data' => [
+			'site_titulo' => 'Login'
+		]
+	]);
+
+	$page->setTpl("login");
 
 	return $response->withStatus(200);
 });
