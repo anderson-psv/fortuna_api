@@ -6,8 +6,11 @@ use Exception;
 use Fortuna\Mysql;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Fortuna\Model;
+use Lazer\Classes\Database as Lazer;
 
-class Usuario
+
+class Usuario extends Model
 {
     const SESSION        = "Usuario";
     const SECRET         = "FortunaPhp7.4_Secret";
@@ -16,88 +19,68 @@ class Usuario
     const ERROR_REGISTER = "UserErrorRegister";
     const SUCCESS        = "UserSuccess";
 
-    public static string $tabela_db = 'db_usuario';
+    public static string $tabela_db = 'f_usuario';
     public static array $campos_db  = [
-        'idusuario',
+        'id',
         'email',
         'senha',
         'isadmin'
     ];
-
-    private Connection $db_conn;
 
     private string $idusuario = '';
     private string $email     = '';
     private string $senha     = '';
     private int    $isadmin   = 0;
 
-    public function setIdusuario(string $idusuario) {
+    public function setIdusuario(string $idusuario)
+    {
         $this->idusuario = $idusuario;
         return $this;
     }
 
-    public function getIdusuario() {
+    public function getIdusuario()
+    {
         return $this->idusuario;
     }
 
-    public function setEmail(string $email) {
+    public function setEmail(string $email)
+    {
         $this->email = $email;
         return $this;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function setSenha(string $senha) {
+    public function setSenha(string $senha)
+    {
         $this->senha = $senha;
         return $this;
     }
 
-    public function getSenha() {
+    public function getSenha()
+    {
         return $this->senha;
     }
 
-    public function setIsadmin(int $isadmin) {
+    public function setIsadmin(int $isadmin)
+    {
         $this->isadmin = $isadmin;
         return $this;
     }
 
-    public function getIsadmin() {
+    public function getIsadmin()
+    {
         return $this->isadmin;
     }
 
     function __construct(array $dados = [])
     {
-        $this->db_conn = new Mysql();
-
         if ($dados) {
             $this->setDados($dados);
         }
-    }
-
-    public function setDados(array $dados, bool $validar = true)
-    {
-        foreach (self::$campos_db as $campo => $dado) {
-            $this->$campo = $dado;
-        }
-
-        if ($validar) {
-            $this->validarDados($dados);
-        }
-
-        return $this;
-    }
-
-    public function getDados()
-    {
-        $dados = [];
-
-        foreach (self::$campos_db as $campo) {
-            $dados[$campo] = $this->$campo;
-        }
-
-        return $dados;
     }
 
     public function validarDados()
@@ -118,12 +101,10 @@ class Usuario
     public function getUsuarioDb(string $idusuario)
     {
         try {
-            $qb = new QueryBuilder($this->db_conn);
-            $db_user = $qb->select('*')
-                ->from(self::$tabela_db)
-                ->where('idusuario = :idusuario')
-                ->setParameter('idusuario', $idusuario)
-                ->fetchAssociative();
+            $db_user = Lazer::table(self::$tabela_db)
+                ->where('idusuario', '=', $idusuario)
+                ->find()
+                ->asArray();
 
             if (!$db_user) {
                 throw new Exception("Usuário não encontrado", 7400);

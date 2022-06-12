@@ -1,13 +1,38 @@
 <?php
 
+define('LAZER_DATA_PATH', realpath(__DIR__) . '/database/'); //Path to folder with tables
+
+use Fortuna\Db\FileDb;
 use Fortuna\Logger;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Psr7\Response;
+use Lazer\Classes\Database as Lazer;
 
 require_once 'vendor/autoload.php';
 
 putenv('DEBUG=1');
+
+$file_path = __DIR__ . '/database/f_usuario.data.json';
+
+FileDb::createAllTables(__DIR__ . '/conf/database_ini.json');
+$row = Lazer::table('f_usuario');
+
+$row->set([
+        'email' => 'asilva@imply.com',
+        'senha' => '123456',
+        'isadmin' => true
+    ]);
+
+$row->save();
+
+$json  = file_get_contents($file_path);
+$array = json_decode($json, true);
+
+echo $json;
+#Lazer::table('f_usuario')->delete();
+#unlink($file_path);
+
+exit;
 
 if ($files = opendir('app/Routes/')) {
 

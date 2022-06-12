@@ -9,8 +9,7 @@ services:
       - .:/composer
     working_dir: /composer
     command: bash -c "chmod -R 777 . && composer install --dev && composer dump-autoload"
-
-  apache:
+  web:
     build: .
     image: php7.4-apache-server
     container_name: php-server-fortuna
@@ -21,23 +20,23 @@ services:
     depends_on:
       - composer
 
-  db-mysql:
-    image: mysql:8.0
-    container_name: db-mysql-fortuna
-    volumes:
-      - ./database:/var/lib/mysql
-    ports:
-      - "3359:3306"
-    environment:
-      MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: root-fortuna
+  # db-mysql:
+  #   image: mysql:8.0
+  #   container_name: db-mysql-fortuna
+  #   volumes:
+  #     - ./database:/var/lib/mysql
+  #   ports:
+  #     - "3359:3306"
+  #   environment:
+  #     MYSQL_ROOT_USER: root
+  #     MYSQL_ROOT_PASSWORD: root-fortuna
 
-  phpmyadmin:
-   image: phpmyadmin/phpmyadmin
-   container_name: "phpmyadmin-fortuna"
-   ports:
-     - 8084:80
-   environment:
-     PMA_HOST: db-mysql
-   depends_on:
-     - db-mysql
+  # phpmyadmin:
+  #  image: phpmyadmin/phpmyadmin
+  #  container_name: "phpmyadmin-fortuna"
+  #  ports:
+  #    - 8084:80
+  #  environment:
+  #    PMA_HOST: db-mysql
+  #  depends_on:
+  #    - db-mysql

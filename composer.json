@@ -6,8 +6,7 @@
     },
     "require": {
         "php": "^7.4",
-        "doctrine/dbal": "3.3.6",
-    	"phpmailer/phpmailer":"5.2.22",
+        "greg0/lazer-database": "^2.0.0",
         "slim/psr7": "^1.5",
         "slim/slim": "^4.10",
         "rain/raintpl": ">=3.0.0"
