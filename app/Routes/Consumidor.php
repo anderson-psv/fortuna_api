@@ -9,10 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $app->get('/consumidor/login', function (Request $request, Response $response, $args) {
     $page = new Page([
         'data' => [
-            'site_titulo' => 'Login',
-            'custom_js' => [
-                '/res/js'
-            ]
+            'site_titulo' => 'Login'
         ]
     ]);
 
@@ -40,13 +37,8 @@ $app->post('/consumidor/login', function (Request $request, Response $response, 
             'message' => 'Login realizado com sucesso!'
         ]));
 
-        return $response;
+        return $response->withStatus(200);
     }
-
-    $response->getBody()->write([
-        'status' => 'error',
-        'message' => 'Acesso Negado!'
-    ]);
 
     return $response->withStatus(200);
 
