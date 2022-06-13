@@ -31,7 +31,7 @@ if ($files = opendir('app/Routes/')) {
         return $response;
     });
 
-    //Middleware
+    //Middleware Before
     $app->add(function (Request $request, RequestHandler $handler) {
         $response = $handler->handle($request);
         $request
@@ -57,10 +57,13 @@ if ($files = opendir('app/Routes/')) {
         }
     }
 
-    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
-        throw new HttpNotFoundException($request);
+    //Middleware After
+    $app->add(function (Request $request, RequestHandler $handler) {
+        $response = $handler->handle($request);
+        //Seta todo e qualquer header da resposta como json
+        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     });
-    
+
     $app->run();
     exit;
 }
