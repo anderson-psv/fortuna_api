@@ -1,35 +1,38 @@
 <div class="row">
     <script>
-            function requestLogin() 
-            {
-                email = document.getElementById("email").value;
-                senha = document.getElementById("senha").value;
+        function requestLogin() {
+            email = document.getElementById("email").value;
+            senha = document.getElementById("senha").value;
 
-                $alert = null;
-                if(!email) {
-                    $alert = "email inválido!";
-                }
+            $alert = null;
+            if (!email) {
+                $alert = "email inválido!";
+            }
 
-                if(!senha) {
-                    $alert = "senha inválida!";
-                }
+            if (!senha) {
+                $alert = "senha inválida!";
+            }
 
-                if($alert) {
-                    window.alert($alert);
-                }
+            if ($alert) {
+                window.alert($alert);
+            }
 
-                $.post("http://localhost:8083/consumidor/login", {
+            $.post(
+                "/consumidor/login",
+                {
                     email: email,
-                    senha: senha
-                }, function(data) {
-                    console.log(data.message);
-                    if(data.status == "success") {
+                    senha: senha,
+                },
+                function (data) {
+                    console.log(data);
+                    if (data.status == "success") {
                         window.location.href = "/";
                     } else {
                         window.alert(data.message);
                     }
-                });
-            }
+                }
+            );
+        }
     </script>
     <div>
         <form action="javascript:requestLogin()" method="post" id="login">
