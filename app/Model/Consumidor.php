@@ -3,44 +3,42 @@
 namespace Fortuna\Model;
 
 use Exception;
+use Fortuna\Model;
 use Fortuna\Mysql;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Fortuna\Model;
 use Lazer\Classes\Database as Lazer;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 
-class Usuario extends Model
+class Consumidor extends Model
 {
-    const SESSION        = "Usuario";
+    const SESSION        = "Consumidor";
     const SECRET         = "FortunaPhp7.4_Secret";
     const SECRET2        = "FortunaPhp7.4_SecondSecret";
-    const ERROR          = "UserError";
-    const ERROR_REGISTER = "UserErrorRegister";
-    const SUCCESS        = "UserSuccess";
+    const ERROR          = "ConsumidorError";
+    const ERROR_REGISTER = "ConsumidorErrorRegister";
+    const SUCCESS        = "ConsumidorSuccess";
 
-    public static string $tabela_db = 'f_usuario';
+    public static string $tabela_db = 'f_consumidor';
     public static array $campos_db  = [
         'id',
         'email',
-        'senha',
-        'isadmin'
+        'senha'
     ];
 
-    private string $idusuario = '';
+    private string $id        = '';
     private string $email     = '';
     private string $senha     = '';
-    private int    $isadmin   = 0;
 
-    public function setIdusuario(string $idusuario)
+    public function setId(string $id)
     {
-        $this->idusuario = $idusuario;
+        $this->id = $id;
         return $this;
     }
 
-    public function getIdusuario()
+    public function getId()
     {
-        return $this->idusuario;
+        return $this->id;
     }
 
     public function setEmail(string $email)
@@ -63,17 +61,6 @@ class Usuario extends Model
     public function getSenha()
     {
         return $this->senha;
-    }
-
-    public function setIsadmin(int $isadmin)
-    {
-        $this->isadmin = $isadmin;
-        return $this;
-    }
-
-    public function getIsadmin()
-    {
-        return $this->isadmin;
     }
 
     function __construct(array $dados = [])
@@ -122,55 +109,41 @@ class Usuario extends Model
     {
         $this->validarDados();
 
-        if ($this->idusuario) {
-            //Possui idusuario
-            try {
-                $qb = new QueryBuilder($this->db_conn);
-                $qb->update(self::$tabela_db);
+        $table = Lazer::table(self::$tabela_db);
+        $table->set($this->getDados());
 
-                foreach (self::$campos_db as $campo) {
-                    $qb->set($campo, $campo)
-                        ->setParameter($campo, $this->$campo);
+        $is_insert = !!$this->id;
+
+        try {
+            if ($is_insert) {
+                if ($table->insert()) {
+                    return $table->getField('id');
                 }
-
-                if ($qb->executeStatement()) {
-                    return $this->idusuario;
-                }
-
-                throw new Exception("Erro ao atualizar usuário", 7400);
-            } catch (\Throwable $th) {
-                throw new Exception("Erro ao atualizar dados do usuário", 7400);
-            }
-        } else {
-            try {
-                $qb = new QueryBuilder($this->db_conn);
-                $qb->insert(self::$tabela_db);
-
-                foreach (self::$campos_db as $campo) {
-                    $qb->setValue($campo, $campo)
-                        ->setParameter($campo, $this->$campo);
-                }
-
-                if ($qb->executeStatement()) {
-                    return $this->idusuario;
-                }
-
                 throw new Exception("Erro ao inserir usuário", 7400);
-            } catch (\Throwable $th) {
-                throw new Exception("Erro ao salvar dados do usuário", 7400);
             }
+            //Update
+            if ($table->save()) {
+                return $this->id;
+            }
+
+            throw new Exception("Erro ao atualizar usuário", 7400);
+        } catch (\Throwable $th) {
+            $msg = "Erro ao atualizar dados do usuário";
+
+            if ($is_insert) {
+                $msg = "Erro ao salvar dados do usuário";
+            }
+            throw new Exception($msg, 7400);
         }
     }
 
-    public function delete(string $idusuario)
+    public function delete(string $idconsumidor)
     {
         try {
-            $qb = new QueryBuilder($this->db_conn);
-            $qb->delete(self::$tabela_db)
-                ->where('idusuario = :idusuario')
-                ->setParameter('idusuario', $idusuario);
+            $row = Lazer::table(self::$tabela_db)
+                ->where('id', '=', $idconsumidor);
 
-            if (!$qb->executeStatement()) {
+            if (!$row->delete()) {
                 throw new Exception("Não foi possivel deletar o usuário!", 7400);
             }
         } catch (\Throwable $th) {
@@ -199,44 +172,29 @@ class Usuario extends Model
             !(int)$_SESSION[self::SESSION]['idusuario'] > 0
         ) {
             return false;
-        } else {
-            if ($inadmin === true && (bool)$_SESSION[self::SESSION]['inadmin'] === true) {
-                return true;
-            } else if ($inadmin === false) {
-                return true;
-            } else {
-                return false;
-            }
         }
+
+        return false;
     }
 
     public static function login($email, $password)
     {
-        $db = (new Mysql())->getDb();
-        $qb = new QueryBuilder($db);
+        $db_usuario = Lazer::table(self::$tabela_db)
+            ->where('email', '=', $email)
+            ->find()
+            ->asArray();
 
-        $db_user = $qb->select(
-            'idusuario',
-            'email',
-            'senha',
-            'isadmin'
-        )
-            ->from(self::$tabela_db)
-            ->where('email = :email')
-            ->setParameter('email', $email)
-            ->fetchAssociative();
-
-        if (!$db_user) {
+        if (!$db_usuario) {
             throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
 
-        if (password_verify($password, $db_user["senha"]) === true) {
+        if (password_verify($password, $db_usuario["senha"]) === true) {
             $usuario = new self();
 
-            $usuario->setDados($db_user);
+            $usuario->setDados($db_usuario);
 
             //Remove o hash para nao salvar na sessão
-            unset($db_user['senha']);
+            unset($db_usuario['senha']);
 
             $_SESSION[self::SESSION] = $usuario->getDados();
 
@@ -248,7 +206,7 @@ class Usuario extends Model
 
     public static function verifyLogin($inadmin = true)
     {
-        if (!Usuario::checkLogin($inadmin)) {
+        if (!self::checkLogin($inadmin)) {
             if ($inadmin) {
                 header("Location: /admin/login");
             } else {
@@ -260,7 +218,7 @@ class Usuario extends Model
 
     public static function logout()
     {
-        $_SESSION[Usuario::SESSION] = NULL;
+        $_SESSION[self::SESSION] = NULL;
     }
 
     /* Erros  */

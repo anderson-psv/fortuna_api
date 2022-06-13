@@ -10,6 +10,8 @@ services:
     working_dir: /composer
     command: bash -c "chmod -R 777 . && composer install --dev && composer dump-autoload"
   web:
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal #docker network ip.
     build: .
     image: php7.4-apache-server
     container_name: php-server-fortuna
@@ -19,7 +21,6 @@ services:
       - "8083:80"
     depends_on:
       - composer
-
   # db-mysql:
   #   image: mysql:8.0
   #   container_name: db-mysql-fortuna

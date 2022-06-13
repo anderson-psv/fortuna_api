@@ -2,6 +2,7 @@
 
 namespace Fortuna;
 
+use Fortuna\Model\Consumidor;
 use Rain\Tpl;
 use Fortuna\Model\Usuario;
 
@@ -17,7 +18,7 @@ class Page
 
     public function __construct($opts = array(), $tpl_dir = '/views/')
     {
-        $opts['data']['usuario_logado'] = Usuario::checklogin();
+        $opts['data']['usuario_logado'] = Consumidor::checklogin();
 
         $this->options = array_merge($this->defaults, $opts);
 

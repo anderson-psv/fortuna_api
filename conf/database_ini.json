@@ -1,8 +1,10 @@
 {
     "f_usuario": {
-        "idusuario": "integer",
         "email": "string",
-        "senha": "string",
-        "isadmin": "boolean"
+        "senha": "string"
+    },
+    "f_consumidor": {
+        "email": "string",
+        "senha": "string"
     }
 }

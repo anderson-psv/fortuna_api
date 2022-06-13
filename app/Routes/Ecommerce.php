@@ -19,6 +19,8 @@ $app->get('/', function (Request $request, Response $response, $args) {
 	return $response->withStatus(200);
 });
 
+
+
 $app->get('/sobre', function (Request $request, Response $response, $args) {
 	$page = new Page([
 		'data' => [
@@ -51,18 +53,6 @@ $app->get('/contato', function (Request $request, Response $response, $args) {
 	]);
 
 	$page->setTpl("contato");
-
-	return $response->withStatus(200);
-});
-
-$app->get('/login', function (Request $request, Response $response, $args) {
-	$page = new Page([
-		'data' => [
-			'site_titulo' => 'Login'
-		]
-	]);
-
-	$page->setTpl("login");
 
 	return $response->withStatus(200);
 });
