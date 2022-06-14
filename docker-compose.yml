@@ -12,6 +12,7 @@ services:
   web:
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal #docker network ip.
+      TZ: America/Sao_Paulo
     build: .
     image: php7.4-apache-server
     container_name: php-server-fortuna

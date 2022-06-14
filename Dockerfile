@@ -4,7 +4,9 @@ WORKDIR /var/www/fortuna
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+
 RUN apt-get update && apt-get install -y \
+    tzdata \
     zlib1g-dev \
     libzip-dev \
     unzip
