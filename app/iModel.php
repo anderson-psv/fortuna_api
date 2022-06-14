@@ -8,5 +8,5 @@ interface Model
     public function getDados();
     public function validarDados();
     public function save();
-    public function delete();
+    public function delete(string $id);
 }
