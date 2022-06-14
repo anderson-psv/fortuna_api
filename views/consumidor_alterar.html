@@ -1,13 +1,13 @@
 <div class="row">
     <script>
-        function cadastrarConsumidor() {
+        function alterarConsumidor() {
             nome  = document.getElementById("nome").value;
             email = document.getElementById("email").value;
             senha = document.getElementById("senha").value;
 
             $.post({
                 type: "POST",
-                url: "/consumidor/cadastro",
+                url: "/consumidor/alterar",
                 data: JSON.stringify({
                     nome:  nome,
                     email: email,
@@ -15,7 +15,7 @@
                 }), // or JSON.stringify ({name: 'jonas'}),
                 success: function (data) {
                     if (data.status == "success") {
-                        window.alert("Usuario Cadastrado");
+                        window.alert("Usuario Alterado");
                         window.location.href = "/";
                     } else {
                         window.alert(data.message);
@@ -28,8 +28,8 @@
     </script>
     <div class="col-md-6">
         <div class="form-group">
-            <h1>Cadastro</h1>
-            <form action="javascript:cadastrarConsumidor()" method="post" id="form_cadastro">
+            <h1>Alterar</h1>
+            <form action="javascript:alterarConsumidor()" method="post" id="form_cadastro">
                 <label for="nome">Nome</label>
                 <input
                     type="text"
@@ -37,6 +37,7 @@
                     id="nome"
                     name="nome"
                     placeholder="Nome"
+                    value="{$nome}"
                 />
                 <br />
                 <label for="email">Email</label>
@@ -46,6 +47,7 @@
                     id="email"
                     name="email"
                     placeholder="Email"
+                    value="{$email}"
                 />
                 <br />
                 <label for="senha">Senha</label>
@@ -58,7 +60,7 @@
                     placeholder="Senha"
                 />
                 <br>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <button type="submit" class="btn btn-primary">Alterar</button>
             </form>
         </div>
     </div>

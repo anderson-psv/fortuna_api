@@ -11,7 +11,7 @@ $app->get('/consumidor/login', function (Request $request, Response $response, $
         header('Location: /');
         exit;
     }
-    
+
     $page = new Page([
         'data' => [
             'site_titulo' => 'Login'
@@ -65,6 +65,50 @@ $app->get('/consumidor/cadastro', function (Request $request, Response $response
     ]);
 
     $page->setTpl("consumidor_cadastro");
+
+    return $response->withStatus(200);
+});
+
+$app->post('/consumidor/cadastro', function (Request $request, Response $response, $args) {
+    $body = json_decode($request->getBody()->getContents(), true);
+
+    try {
+        $consumidor = new Consumidor($body);
+        if (!$consumidor->save()) {
+            throw new Exception("Não foi possível realizar o cadastro!", 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Cadastro realizado com sucesso!'
+        ]));
+
+        //Cria a session com login
+        Consumidor::login($body['email'], $body['senha']);
+
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+$app->get('/consumidor/alterar', function (Request $request, Response $response, $args) {
+    if(!Consumidor::checkLogin()) {
+        header('Location: /');
+        exit;
+    }
+
+    $page = new Page([
+        'data' => [
+            'site_titulo' => 'Alterar'
+        ]
+    ]);
+
+    $page->setTpl("consumidor_alterar", $_SESSION[Consumidor::SESSION]);
 
     return $response->withStatus(200);
 });
