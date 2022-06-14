@@ -1,5 +1,6 @@
 <?php
 
+use Fortuna\Logger;
 use Fortuna\Model\Consumidor;
 use Fortuna\Page;
 
@@ -22,33 +23,26 @@ $app->post('/consumidor/login', function (Request $request, Response $response, 
     $params = $request->getQueryParams();
     $body   = json_decode($request->getBody()->getContents(), true);
 
+    (new Logger)->debug('teste', $body);
+    
     try {
         $usuario = Consumidor::login($body['email'], $body['senha']);
     } catch (\Throwable $th) {
         $response->getBody()->write(json_encode([
-            'status' => 'error',
+            'status'  => 'error',
             'message' => $th->getMessage()
         ]));
     }
 
     if ($usuario) {
         $response->getBody()->write(json_encode([
-            'status' => 'success',
+            'usuario' => $usuario,
+            'status'  => 'success',
             'message' => 'Login realizado com sucesso!'
         ]));
 
         return $response->withStatus(200);
     }
-
-    return $response->withStatus(200);
-
-    $page = new Page([
-        'data' => [
-            'site_titulo' => 'Login'
-        ]
-    ]);
-
-    $page->setTpl("index");
 
     return $response->withStatus(200);
 });

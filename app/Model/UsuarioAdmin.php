@@ -6,7 +6,7 @@ use Exception;
 use Fortuna\Model;
 use Lazer\Classes\Database as Lazer;
 
-class UsuarioAdmin extends Model
+class UsuarioAdmin implements Model
 {
     const SESSION        = "UsuarioAdmin";
     const SECRET         = "FortunaPhp7.4_Secret";
@@ -21,6 +21,36 @@ class UsuarioAdmin extends Model
         'email',
         'senha'
     ];
+
+    public function setDados(array $dados, bool $validar = true)
+    {
+        foreach (self::$campos_db as $campo) {
+            $this->$campo = $dados[$campo];
+        }
+
+        if ($validar) {
+            $this->validarDados($dados);
+        }
+
+        return $this;
+    }
+
+    function __construct(array $dados = [])
+    {
+        if ($dados) {
+            $this->setDados($dados);
+        }
+    }
+
+    public function getDados()
+    {
+        $dados = [];
+        foreach (self::$campos_db as $campo) {
+            $dados[$campo] = $this->$campo;
+        }
+
+        return $dados;
+    }
 
     public function setIdusuario(string $idusuario)
     {
@@ -53,13 +83,6 @@ class UsuarioAdmin extends Model
     public function getSenha()
     {
         return $this->senha;
-    }
-
-    function __construct(array $dados = [])
-    {
-        if ($dados) {
-            $this->setDados($dados);
-        }
     }
 
     public function validarDados()

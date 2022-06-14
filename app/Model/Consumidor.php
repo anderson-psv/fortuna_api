@@ -4,21 +4,11 @@ namespace Fortuna\Model;
 
 use Exception;
 use Fortuna\Model;
-use Fortuna\Mysql;
-use Doctrine\DBAL\Connection;
+use Fortuna\Logger;
 use Lazer\Classes\Database as Lazer;
-use Doctrine\DBAL\Query\QueryBuilder;
 
-
-class Consumidor extends Model
+class Consumidor implements Model
 {
-    const SESSION        = "Consumidor";
-    const SECRET         = "FortunaPhp7.4_Secret";
-    const SECRET2        = "FortunaPhp7.4_SecondSecret";
-    const ERROR          = "ConsumidorError";
-    const ERROR_REGISTER = "ConsumidorErrorRegister";
-    const SUCCESS        = "ConsumidorSuccess";
-
     public static string $tabela_db = 'f_consumidor';
     public static array $campos_db  = [
         'id',
@@ -26,9 +16,46 @@ class Consumidor extends Model
         'senha'
     ];
 
+    const SESSION        = "Consumidor";
+    const SECRET         = "FortunaPhp7.4_Secret";
+    const SECRET2        = "FortunaPhp7.4_SecondSecret";
+    const ERROR          = "ConsumidorError";
+    const ERROR_REGISTER = "ConsumidorErrorRegister";
+    const SUCCESS        = "ConsumidorSuccess";
+
     private string $id        = '';
     private string $email     = '';
     private string $senha     = '';
+
+    function __construct(array $dados = [])
+    {
+        if ($dados) {
+            $this->setDados($dados);
+        }
+    }
+
+    public function setDados(array $dados, bool $validar = true)
+    {
+        foreach (self::$campos_db as $campo) {
+            $this->$campo = $dados[$campo];
+        }
+
+        if ($validar) {
+            $this->validarDados($dados);
+        }
+
+        return $this;
+    }
+
+    public function getDados()
+    {
+        $dados = [];
+        foreach (self::$campos_db as $campo) {
+            $dados[$campo] = $this->$campo;
+        }
+
+        return $dados;
+    }
 
     public function setId(string $id)
     {
@@ -61,13 +88,6 @@ class Consumidor extends Model
     public function getSenha()
     {
         return $this->senha;
-    }
-
-    function __construct(array $dados = [])
-    {
-        if ($dados) {
-            $this->setDados($dados);
-        }
     }
 
     public function validarDados()
@@ -179,12 +199,38 @@ class Consumidor extends Model
 
     public static function login($email, $password)
     {
-        $db_usuario = Lazer::table(self::$tabela_db)
+        if (empty($email)) {
+            throw new Exception("Informe o e-mail", 7400);
+        }
+
+        if (empty($password)) {
+            throw new Exception("Informe a senha", 7400);
+        }
+
+        $table      = Lazer::table(self::$tabela_db);
+        $db_usuario = $table
             ->where('email', '=', $email)
             ->find()
             ->asArray();
 
         if (!$db_usuario) {
+            $num_usuarios = $table->count();
+
+            if (!$num_usuarios) {
+            (new Logger)->debug('criando', [$email]);
+                (new Consumidor())->getDados(); //teste
+                $new_consumidor = new Consumidor([
+                    'email' => $email,
+                    'senha' => $password
+                ]);
+
+                if($new_consumidor->save()) {
+                    $dados = $new_consumidor->getDados();
+                    unset($dados['senha']);
+                    return $dados;
+                }
+            }
+
             throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
 
