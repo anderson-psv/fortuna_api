@@ -2,7 +2,7 @@
 
 namespace Fortuna;
 
-interface Model
+interface iModel
 {
     public function setDados(array $dados, bool $validar = true);
     public function getDados();

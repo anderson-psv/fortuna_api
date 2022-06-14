@@ -3,10 +3,10 @@
 namespace Fortuna\Model;
 
 use Exception;
-use Fortuna\Model;
+use Fortuna\iModel;
 use Lazer\Classes\Database as Lazer;
 
-class UsuarioAdmin implements Model
+class UsuarioAdmin implements iModel
 {
     const SESSION        = "UsuarioAdmin";
     const SECRET         = "FortunaPhp7.4_Secret";

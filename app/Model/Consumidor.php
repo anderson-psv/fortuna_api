@@ -3,11 +3,11 @@
 namespace Fortuna\Model;
 
 use Exception;
-use Fortuna\Model;
+use Fortuna\iModel;
 use Fortuna\Logger;
 use Lazer\Classes\Database as Lazer;
 
-class Consumidor implements Model
+class Consumidor implements iModel
 {
     public static string $tabela_db = 'f_consumidor';
     public static array $campos_db  = [
@@ -218,7 +218,6 @@ class Consumidor implements Model
 
             if (!$num_usuarios) {
             (new Logger)->debug('criando', [$email]);
-                (new Consumidor())->getDados(); //teste
                 $new_consumidor = new Consumidor([
                     'email' => $email,
                     'senha' => $password

@@ -17,21 +17,24 @@
                 window.alert($alert);
             }
 
-            $.post(
-                "/consumidor/login",
-                {
+            $.post({
+                type: "POST",
+                url: "/consumidor/login",
+                data: JSON.stringify({
                     email: email,
-                    senha: senha,
-                },
-                function (data) {
+                    senha: senha
+                }), // or JSON.stringify ({name: 'jonas'}),
+                success: function (data) {
                     console.log(data);
                     if (data.status == "success") {
                         window.location.href = "/";
                     } else {
                         window.alert(data.message);
                     }
-                }
-            );
+                },
+                contentType: "application/json",
+                dataType: "json",
+            });
         }
     </script>
     <div>
