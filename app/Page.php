@@ -23,8 +23,8 @@ class Page
         $this->options = array_merge($this->defaults, $opts);
 
         $config = array(
-            "tpl_dir"   => dirname(__DIR__) . $tpl_dir,
-            "cache_dir" => dirname(__DIR__) . "/views-cache/",
+            "tpl_dir"   => BASE_DIR . $tpl_dir,
+            "cache_dir" => BASE_DIR . "/views-cache/",
             "debug"     => false,
         );
 

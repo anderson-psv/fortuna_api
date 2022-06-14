@@ -19,7 +19,7 @@ class Logger extends AbstractLogger
      */
     public function log($level, $message, array $context = []): void
     {
-        $path = dirname(__DIR__) . '/log';
+        $path = BASE_DIR . '/log';
 
         if (!is_dir($path)) {
             mkdir($path);
