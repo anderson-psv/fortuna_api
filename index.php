@@ -1,15 +1,16 @@
 <?php
 
-ini_set("error_log", "/log/php-error.log");
-define('LAZER_DATA_PATH', realpath(__DIR__) . '/database/'); //Path to folder with tables
+session_start();
+define('BASE_DIR', __DIR__);
+define('LAZER_DATA_PATH', BASE_DIR . '/database/');
+define('ID_HASH', '$2y$14$'); 
 
-
+ini_set("error_log", BASE_DIR . "/log/php-error.log");
 
 use Fortuna\Logger;
 use Fortuna\Db\FileDb;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Slim\Exception\HttpNotFoundException;
 
 require_once 'vendor/autoload.php';
 
@@ -19,9 +20,9 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 putenv('DEBUG=1');
 
-$file_path = __DIR__ . '/database/f_usuario.data.json';
+$file_path = BASE_DIR . '/database/f_usuario.data.json';
 
-FileDb::createAllTables(__DIR__ . '/conf/database_ini.json');
+FileDb::createAllTables(BASE_DIR . '/conf/database_ini.json');
 
 if ($files = opendir('app/Routes/')) {
 
