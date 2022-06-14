@@ -9,7 +9,7 @@ services:
       - .:/composer
     working_dir: /composer
     command: bash -c "chmod -R 777 . && composer install --dev && composer dump-autoload"
-  web:
+  php-web-server:
     environment:
       XDEBUG_CONFIG: remote_host=host.docker.internal #docker network ip.
       TZ: America/Sao_Paulo
