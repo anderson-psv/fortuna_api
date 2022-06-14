@@ -49,6 +49,12 @@ $app->post('/consumidor/login', function (Request $request, Response $response, 
     return $response->withStatus(200);
 });
 
+$app->get('/consumidor/logout', function (Request $request, Response $response, $args) {
+    Consumidor::logout();
+    header('Location: /');
+    exit;
+});
+
 $app->post('/consumidor/cadastro', function (Request $request, Response $response, $args) {
     $params = $request->getQueryParams();
     $body   = $request->getBody()->getContents();
