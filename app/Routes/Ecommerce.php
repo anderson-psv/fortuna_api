@@ -11,8 +11,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 	#$body   = $request->getBody()->getContents();
 	$page = new Page([
 		'data' => [
-			'site_titulo' 	 => 'Home',
-			'usuario_logado' => Consumidor::checkLogin()
+			'site_titulo' 	 => 'Home'
 		]
 	]);
 
@@ -26,7 +25,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->get('/sobre', function (Request $request, Response $response, $args) {
 	$page = new Page([
 		'data' => [
-			'site_titulo' => 'Sobre'
+			'site_titulo'    => 'Sobre'
 		]
 	]);
 
@@ -38,7 +37,7 @@ $app->get('/sobre', function (Request $request, Response $response, $args) {
 $app->get('/produtos', function (Request $request, Response $response, $args) {
 	$page = new Page([
 		'data' => [
-			'site_titulo' => 'Produtos'
+			'site_titulo'    => 'Produtos'
 		]
 	]);
 
@@ -50,7 +49,7 @@ $app->get('/produtos', function (Request $request, Response $response, $args) {
 $app->get('/contato', function (Request $request, Response $response, $args) {
 	$page = new Page([
 		'data' => [
-			'site_titulo' => 'Contato'
+			'site_titulo'    => 'Contato'
 		]
 	]);
 
