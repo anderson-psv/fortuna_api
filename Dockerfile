@@ -19,8 +19,6 @@ RUN docker-php-ext-install \
     && mkdir -p /var/www/fortuna \
     && chmod -R 775 /var/www/fortuna
 
-
-
 #Realiza a copia do conf que define a pasta root do apache como /var/www/fortuna
 COPY ./conf/sites-available /etc/apache2/sites-available
 
