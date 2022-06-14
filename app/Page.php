@@ -19,6 +19,7 @@ class Page
     public function __construct($opts = array(), $tpl_dir = '/views/')
     {
         $opts['data']['consumidor_logado'] = Consumidor::checklogin();
+        $opts['data']['consumidor_nome']   = Consumidor::getFromSession('nome');
 
         $this->options = array_merge($this->defaults, $opts);
 

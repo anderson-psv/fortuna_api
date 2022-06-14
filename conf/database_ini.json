@@ -1,9 +1,11 @@
 {
     "f_usuario": {
+        "nome": "string",
         "email": "string",
         "senha": "string"
     },
     "f_consumidor": {
+        "nome": "string",
         "email": "string",
         "senha": "string"
     }

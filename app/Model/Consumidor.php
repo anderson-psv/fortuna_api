@@ -12,6 +12,7 @@ class Consumidor implements iModel
     public static string $tabela_db = 'f_consumidor';
     public static array $campos_db  = [
         'id',
+        'nome',
         'email',
         'senha'
     ];
@@ -23,9 +24,11 @@ class Consumidor implements iModel
     const ERROR_REGISTER = "ConsumidorErrorRegister";
     const SUCCESS        = "ConsumidorSuccess";
 
-    private int $id           = -1;
-    private string $email     = '';
-    private string $senha     = '';
+    private int $id = -1;
+
+    private string $nome  = '';
+    private string $email = '';
+    private string $senha = '';
 
     function __construct(array $dados = [])
     {
@@ -92,9 +95,24 @@ class Consumidor implements iModel
         return $this->senha;
     }
 
+    public function setNome(string $nome)
+    {
+        $this->nome = $nome;
+        return $this;
+    }
+
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
     public function validarDados()
     {
         try {
+            if (empty($this->nome)) {
+                throw new Exception("Informe o nome", 7400);
+            }
+
             if (empty($this->email)) {
                 throw new Exception("Informe o e-mail", 7400);
             }
