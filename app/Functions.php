@@ -28,4 +28,11 @@ class Functions
             'cost' => 14
         ]);
     }
+
+    public static function isJson($data)
+    {
+        return is_string($data)
+            && is_array(json_decode($data, true))
+            && (json_last_error() == JSON_ERROR_NONE);
+    }
 }

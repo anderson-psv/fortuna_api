@@ -3,12 +3,13 @@
 session_start();
 define('BASE_DIR', __DIR__);
 define('LAZER_DATA_PATH', BASE_DIR . '/database/');
-define('ID_HASH', '$2y$14$'); 
+define('ID_HASH', '$2y$14$');
 
 ini_set("error_log", BASE_DIR . "/log/php-error.log");
 
 use Fortuna\Logger;
 use Fortuna\Db\FileDb;
+use Fortuna\Functions;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
@@ -61,8 +62,13 @@ if ($files = opendir('app/Routes/')) {
     //Middleware After
     $app->add(function (Request $request, RequestHandler $handler) {
         $response = $handler->handle($request);
+
+        $data = $response->getBody()->getContents();
         //Seta todo e qualquer header da resposta como json
-        return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        if (Functions::isJson($data)) {
+            return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
+        }
+        return $response;
     });
 
     $app->run();

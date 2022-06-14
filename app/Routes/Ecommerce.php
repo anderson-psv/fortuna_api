@@ -24,7 +24,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 $app->get('/sobre', function (Request $request, Response $response, $args) {
 	$page = new Page([
 		'data' => [
-			'site_titulo'    => 'Sobre'
+			'site_titulo' => 'Sobre'
 		]
 	]);
 
