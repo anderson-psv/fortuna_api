@@ -1,32 +1,18 @@
 <div class="row">
     <script>
-        function requestLogin() {
-            email = document.getElementById("email").value;
-            senha = document.getElementById("senha").value;
-
-            $alert = null;
-            if (!email) {
-                $alert = "email inválido!";
-            }
-
-            if (!senha) {
-                $alert = "senha inválida!";
-            }
-
-            if ($alert) {
-                window.alert($alert);
-            }
-
+        function cadastrarConsumidor() {
             $.post({
                 type: "POST",
-                url: "/consumidor/login",
+                url: "/consumidor/cadastro",
                 data: JSON.stringify({
+                    nome:  nome,
                     email: email,
                     senha: senha
                 }), // or JSON.stringify ({name: 'jonas'}),
                 success: function (data) {
                     console.log(data);
                     if (data.status == "success") {
+                        window.alert("Usuario Cadastrado");
                         window.location.href = "/";
                     } else {
                         window.alert(data.message);
@@ -37,9 +23,18 @@
             });
         }
     </script>
-    <div>
-        <form action="javascript:requestLogin()" method="post" id="login">
-            <div class="form-group">
+    <div class="col-md-6">
+        <div class="form-group">
+            <form action="javascript:cadastrarConsumidor()" method="post" id="form_cadastro">
+                <label for="nome">Nome</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="nome"
+                    name="nome"
+                    placeholder="Nome"
+                />
+                <br />
                 <label for="email">Email</label>
                 <input
                     type="text"
@@ -48,19 +43,18 @@
                     name="email"
                     placeholder="Email"
                 />
-            </div>
-            <div class="form-group">
+                <br />
                 <label for="senha">Senha</label>
                 <input
-                    type="senha"
+                    type="text"
                     class="form-control"
                     id="senha"
                     name="senha"
                     placeholder="Senha"
                 />
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        <a href="/consumidor/cadastro">Cadastre-se</a>
+                <br>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
     </div>
 </div>

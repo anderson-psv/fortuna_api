@@ -55,16 +55,16 @@ $app->get('/consumidor/logout', function (Request $request, Response $response, 
     exit;
 });
 
-$app->post('/consumidor/cadastro', function (Request $request, Response $response, $args) {
+$app->get('/consumidor/cadastro', function (Request $request, Response $response, $args) {
     $params = $request->getQueryParams();
     $body   = $request->getBody()->getContents();
     $page = new Page([
         'data' => [
-            'site_titulo' => 'Login'
+            'site_titulo' => 'Cadastro'
         ]
     ]);
 
-    $page->setTpl("login");
+    $page->setTpl("consumidor_cadastro");
 
     return $response->withStatus(200);
 });
