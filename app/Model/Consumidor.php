@@ -160,7 +160,6 @@ class Consumidor implements iModel
 
         $is_insert = !!$this->id;
 
-
         try {
             if ($is_insert) {
                 $table->insert();
@@ -246,21 +245,6 @@ class Consumidor implements iModel
         $db_usuario = $db_usuario[0] ?: null;
 
         if (!$db_usuario) {
-            $num_usuarios = $table->count();
-
-            if (!$num_usuarios) {
-                $new_consumidor = new Consumidor([
-                    'email' => $email,
-                    'senha' => $password
-                ]);
-
-                if ($new_consumidor->save()) {
-                    $dados = $new_consumidor->getDados();
-                    unset($dados['senha']);
-                    return $dados;
-                }
-            }
-
             throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
 
