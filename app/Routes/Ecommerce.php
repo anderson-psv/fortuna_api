@@ -1,7 +1,6 @@
 <?php
 
 use Fortuna\Page;
-use Fortuna\Model\Consumidor;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
