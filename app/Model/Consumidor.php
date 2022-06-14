@@ -4,7 +4,7 @@ namespace Fortuna\Model;
 
 use Exception;
 use Fortuna\iModel;
-use Fortuna\Logger;
+use Fortuna\Functions;
 use Lazer\Classes\Database as Lazer;
 
 class Consumidor implements iModel
@@ -23,7 +23,7 @@ class Consumidor implements iModel
     const ERROR_REGISTER = "ConsumidorErrorRegister";
     const SUCCESS        = "ConsumidorSuccess";
 
-    private string $id        = '';
+    private int $id           = -1;
     private string $email     = '';
     private string $senha     = '';
 
@@ -37,7 +37,9 @@ class Consumidor implements iModel
     public function setDados(array $dados, bool $validar = true)
     {
         foreach (self::$campos_db as $campo) {
-            $this->$campo = $dados[$campo];
+            if (isset($dados[$campo])) {
+                $this->$campo = Functions::modelCasting(gettype($this->$campo), $dados[$campo]);
+            }
         }
 
         if ($validar) {
@@ -92,16 +94,21 @@ class Consumidor implements iModel
 
     public function validarDados()
     {
-        if (empty($this->email)) {
-            throw new Exception("Informe o e-mail", 7400);
-        }
+        try {
+            if (empty($this->email)) {
+                throw new Exception("Informe o e-mail", 7400);
+            }
 
-        if (empty($this->senha)) {
-            throw new Exception("Informe a senha", 7400);
-        }
+            if (empty($this->senha)) {
+                throw new Exception("Informe a senha", 7400);
+            }
 
-        if (!in_array($this->isadmin, [0, 1])) {
-            throw new Exception("Informe o tipo de usuário(Admin(1), Consumidor(0))", 7400);
+            if (!Functions::isHash($this->senha)) {
+                $this->senha = Functions::getPasswordHash($this->senha);
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage());
+            throw $th;
         }
     }
 
@@ -121,6 +128,7 @@ class Consumidor implements iModel
 
             return $this;
         } catch (\Throwable $th) {
+            error_log($th->getMessage());
             throw new Exception("Erro ao buscar usuário no banco de dados", 7400);
         }
     }
@@ -134,20 +142,23 @@ class Consumidor implements iModel
 
         $is_insert = !!$this->id;
 
+
         try {
             if ($is_insert) {
-                if ($table->insert()) {
-                    return $table->getField('id');
+                $table->insert();
+                if ($id = $table->getField('id')) {
+                    return $id;
                 }
+
                 throw new Exception("Erro ao inserir usuário", 7400);
             }
+
             //Update
-            if ($table->save()) {
-                return $this->id;
-            }
+            $table->save();
 
             throw new Exception("Erro ao atualizar usuário", 7400);
         } catch (\Throwable $th) {
+            error_log($th->getMessage());
             $msg = "Erro ao atualizar dados do usuário";
 
             if ($is_insert) {
@@ -167,6 +178,7 @@ class Consumidor implements iModel
                 throw new Exception("Não foi possivel deletar o usuário!", 7400);
             }
         } catch (\Throwable $th) {
+            error_log($th->getMessage());
             throw new Exception("Erro ao deletar usuário", 7400);
         }
     }
@@ -189,12 +201,12 @@ class Consumidor implements iModel
             ||
             !$_SESSION[self::SESSION]
             ||
-            !(int)$_SESSION[self::SESSION]['idusuario'] > 0
+            !(int)$_SESSION[self::SESSION]['id'] > 0
         ) {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     public static function login($email, $password)
@@ -213,17 +225,18 @@ class Consumidor implements iModel
             ->find()
             ->asArray();
 
+        $db_usuario = $db_usuario[0] ?: null;
+
         if (!$db_usuario) {
             $num_usuarios = $table->count();
 
             if (!$num_usuarios) {
-            (new Logger)->debug('criando', [$email]);
                 $new_consumidor = new Consumidor([
                     'email' => $email,
                     'senha' => $password
                 ]);
 
-                if($new_consumidor->save()) {
+                if ($new_consumidor->save()) {
                     $dados = $new_consumidor->getDados();
                     unset($dados['senha']);
                     return $dados;
@@ -233,20 +246,16 @@ class Consumidor implements iModel
             throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
 
-        if (password_verify($password, $db_usuario["senha"]) === true) {
-            $usuario = new self();
-
-            $usuario->setDados($db_usuario);
-
+        if (password_verify($password, $db_usuario["senha"]) == true) {
             //Remove o hash para nao salvar na sessão
             unset($db_usuario['senha']);
 
-            $_SESSION[self::SESSION] = $usuario->getDados();
+            $_SESSION[self::SESSION] = $db_usuario;
 
-            return $usuario;
-        } else {
-            throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
+            return $db_usuario;
         }
+
+        throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
     }
 
     public static function verifyLogin($inadmin = true)
@@ -327,13 +336,5 @@ class Consumidor implements iModel
     public static function clearSuccess()
     {
         $_SESSION[self::SUCCESS] = NULL;
-    }
-    /* Sucesso Fim*/
-
-    public static function getPasswordHash($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT, [
-            'cost' => 14
-        ]);
     }
 }
