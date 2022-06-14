@@ -1,6 +1,7 @@
 <?php
 
 use Fortuna\Page;
+use Fortuna\Model\Consumidor;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -10,7 +11,8 @@ $app->get('/', function (Request $request, Response $response, $args) {
 	#$body   = $request->getBody()->getContents();
 	$page = new Page([
 		'data' => [
-			'site_titulo' => 'Home'
+			'site_titulo' 	 => 'Home',
+			'usuario_logado' => Consumidor::checkLogin()
 		]
 	]);
 
