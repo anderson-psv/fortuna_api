@@ -1,13 +1,17 @@
 <?php
 
-use Fortuna\Logger;
-use Fortuna\Model\Consumidor;
 use Fortuna\Page;
-
+use Fortuna\Model\Consumidor;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$app->get('/consumidor/login', function (Request $request, Response $response, $args) {
+$app->get('/consumidor/login', function (Request $request, Response $response, $args) use ($app) {
+
+    if (Consumidor::checkLogin()) {
+        header('Location: /');
+        exit;
+    }
+    
     $page = new Page([
         'data' => [
             'site_titulo' => 'Login'
@@ -23,8 +27,6 @@ $app->post('/consumidor/login', function (Request $request, Response $response, 
     $params = $request->getQueryParams();
     $body   = json_decode($request->getBody()->getContents(), true);
 
-    (new Logger)->debug('teste', $body);
-    
     try {
         $usuario = Consumidor::login($body['email'], $body['senha']);
     } catch (\Throwable $th) {
