@@ -4,7 +4,7 @@ use Fortuna\Page;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$resource_path = './../../vendor/almasaeed2010/adminlte/';
+$resource_path = './../../res/admin/';
 
 $app->get('/admin', function (Request $request, Response $response, $args) use ($resource_path) {
     $page = new Page([
