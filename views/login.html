@@ -25,7 +25,6 @@
                     senha: senha
                 }), // or JSON.stringify ({name: 'jonas'}),
                 success: function (data) {
-                    console.log(data);
                     if (data.status == "success") {
                         window.location.href = "/";
                     } else {
@@ -42,7 +41,8 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input
-                    type="text"
+                    type="email"
+                    required
                     class="form-control"
                     id="email"
                     name="email"
@@ -52,7 +52,8 @@
             <div class="form-group">
                 <label for="senha">Senha</label>
                 <input
-                    type="senha"
+                    type="password"
+                    required
                     class="form-control"
                     id="senha"
                     name="senha"
