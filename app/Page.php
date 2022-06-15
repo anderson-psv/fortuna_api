@@ -2,9 +2,8 @@
 
 namespace Fortuna;
 
-use Fortuna\Model\Consumidor;
 use Rain\Tpl;
-use Fortuna\Model\Usuario;
+use Fortuna\Model\Consumidor;
 
 class Page
 {
