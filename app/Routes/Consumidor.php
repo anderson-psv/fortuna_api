@@ -85,7 +85,6 @@ $app->post('/consumidor/cadastro', function (Request $request, Response $respons
 
         //Cria a session com login
         Consumidor::login($body['email'], $body['senha']);
-
     } catch (\Throwable $th) {
         $response->getBody()->write(json_encode([
             'status'  => 'error',
@@ -97,10 +96,7 @@ $app->post('/consumidor/cadastro', function (Request $request, Response $respons
 });
 
 $app->get('/consumidor/alterar', function (Request $request, Response $response, $args) {
-    if(!Consumidor::checkLogin()) {
-        header('Location: /');
-        exit;
-    }
+    Consumidor::checkLogin(true);
 
     $page = new Page([
         'data' => [
@@ -109,6 +105,35 @@ $app->get('/consumidor/alterar', function (Request $request, Response $response,
     ]);
 
     $page->setTpl("consumidor_alterar", $_SESSION[Consumidor::SESSION]);
+
+    return $response->withStatus(200);
+});
+
+$app->post('/consumidor/alterar', function (Request $request, Response $response, $args) {
+    Consumidor::checkLogin(true);
+
+    try {
+        $body = json_decode($request->getBody()->getContents(), true);
+
+        $body = array_merge($body, [
+            'id' => $_SESSION[Consumidor::SESSION]['id'] //Add o id para identificação da alteração
+        ]);
+
+        $consumidor = new Consumidor($body);
+        if (!$consumidor->save()) {
+            throw new Exception("Não foi possível realizar a alteração!", 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Alteração realizada com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
 
     return $response->withStatus(200);
 });
