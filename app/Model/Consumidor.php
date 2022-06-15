@@ -155,13 +155,11 @@ class Consumidor implements iModel
     {
         $this->validarDados();
 
-        $table = Lazer::table(self::$tabela_db);
-        $table->set($this->getDados());
-
-        $is_insert = !!$this->id;
-
+        $is_insert = ($this->id < 0);
+        $table     = Lazer::table(self::$tabela_db);
         try {
             if ($is_insert) {
+                $table->set($this->getDados());
                 $table->insert();
                 if ($id = $table->getField('id')) {
                     return $id;
@@ -171,9 +169,12 @@ class Consumidor implements iModel
             }
 
             //Update
+            $table->find($this->id)
+                ->set($this->getDados());
+
             $table->save();
 
-            throw new Exception("Erro ao atualizar usuário", 7400);
+            return true;
         } catch (\Throwable $th) {
             error_log($th->getMessage());
             $msg = "Erro ao atualizar dados do usuário";
@@ -211,8 +212,9 @@ class Consumidor implements iModel
         return $usuario;
     }
 
-    public static function checkLogin($inadmin = true)
+    public static function checkLogin($redirect_home = false)
     {
+        $retorno = true;
         if (
             !isset($_SESSION[self::SESSION])
             ||
@@ -220,10 +222,15 @@ class Consumidor implements iModel
             ||
             !(int)$_SESSION[self::SESSION]['id'] > 0
         ) {
-            return false;
+            $retorno = false;
         }
 
-        return true;
+        if ($redirect_home) {
+            header('Location: /');
+            exit;
+        }
+
+        return $retorno;
     }
 
     public static function login($email, $password)
