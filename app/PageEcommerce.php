@@ -5,7 +5,7 @@ namespace Fortuna;
 use Rain\Tpl;
 use Fortuna\Model\Consumidor;
 
-class Page
+class PageEcommerce
 {
     private $tpl;
     private $options  = [];
@@ -20,6 +20,7 @@ class Page
         $opts['data']['consumidor_logado'] = Consumidor::checklogin();
         $opts['data']['consumidor_nome']   = Consumidor::getFromSession('nome');
 
+        $opts['data']['res_path'] = './res/';
         $this->options = array_merge($this->defaults, $opts);
 
         $config = array(

@@ -1,23 +1,21 @@
 <?php
 
-use Fortuna\Page;
+use Fortuna\PageEcommerce;
 use Fortuna\Model\Consumidor;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$res_path = './../';
 
-$app->get('/consumidor/login', function (Request $request, Response $response, $args) use ($res_path) {
+$app->get('/consumidor/login', function (Request $request, Response $response, $args) {
 
     if (Consumidor::checkLogin()) {
         header('Location: /');
         exit;
     }
 
-    $page = new Page([
+    $page = new PageEcommerce([
         'data' => [
-            'site_titulo' => 'Login',
-            'res_path'    => $res_path
+            'site_titulo' => 'Login'
         ]
     ]);
 
@@ -26,7 +24,7 @@ $app->get('/consumidor/login', function (Request $request, Response $response, $
     return $response->withStatus(200);
 });
 
-$app->post('/consumidor/login', function (Request $request, Response $response, $args) use ($res_path) {
+$app->post('/consumidor/login', function (Request $request, Response $response, $args) {
     $params = $request->getQueryParams();
     $body   = json_decode($request->getBody()->getContents(), true);
 
@@ -58,13 +56,12 @@ $app->get('/consumidor/logout', function (Request $request, Response $response, 
     exit;
 });
 
-$app->get('/consumidor/cadastro', function (Request $request, Response $response, $args) use ($res_path) {
+$app->get('/consumidor/cadastro', function (Request $request, Response $response, $args) {
     $params = $request->getQueryParams();
     $body   = $request->getBody()->getContents();
-    $page = new Page([
+    $page = new PageEcommerce([
         'data' => [
-            'site_titulo' => 'Cadastro',
-            'res_path'    => $res_path
+            'site_titulo' => 'Cadastro'
         ]
     ]);
 
@@ -99,13 +96,12 @@ $app->post('/consumidor/cadastro', function (Request $request, Response $respons
     return $response->withStatus(200);
 });
 
-$app->get('/consumidor/alterar', function (Request $request, Response $response, $args) use ($res_path) {
+$app->get('/consumidor/alterar', function (Request $request, Response $response, $args) {
     Consumidor::checkLogin(true);
 
-    $page = new Page([
+    $page = new PageEcommerce([
         'data' => [
-            'site_titulo' => 'Alterar',
-            'res_path'    => $res_path
+            'site_titulo' => 'Alterar'
         ]
     ]);
 

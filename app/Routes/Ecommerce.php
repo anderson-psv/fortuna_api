@@ -1,17 +1,13 @@
 <?php
 
-use Fortuna\Page;
-
+use Fortuna\PageEcommerce;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$res_path = './../';
-
-$app->get('/', function (Request $request, Response $response, $args) use ($res_path) {
-	$page = new Page([
+$app->get('/', function (Request $request, Response $response, $args) {
+	$page = new PageEcommerce([
 		'data' => [
-			'site_titulo' => 'Home',
-			'res_path'    => $res_path
+			'site_titulo' => 'Home'
 		]
 	]);
 
@@ -20,13 +16,10 @@ $app->get('/', function (Request $request, Response $response, $args) use ($res_
 	return $response->withStatus(200);
 });
 
-
-
-$app->get('/sobre', function (Request $request, Response $response, $args) use ($res_path) {
-	$page = new Page([
+$app->get('/sobre', function (Request $request, Response $response, $args) {
+	$page = new PageEcommerce([
 		'data' => [
-			'site_titulo' => 'Sobre',
-			'res_path'    => $res_path
+			'site_titulo' => 'Sobre'
 		]
 	]);
 
@@ -35,11 +28,10 @@ $app->get('/sobre', function (Request $request, Response $response, $args) use (
 	return $response->withStatus(200);
 });
 
-$app->get('/produtos', function (Request $request, Response $response, $args) use ($res_path) {
-	$page = new Page([
+$app->get('/produtos', function (Request $request, Response $response, $args) {
+	$page = new PageEcommerce([
 		'data' => [
-			'site_titulo' => 'Produtos',
-			'res_path'    => $res_path
+			'site_titulo' => 'Produtos'
 		]
 	]);
 
@@ -48,11 +40,10 @@ $app->get('/produtos', function (Request $request, Response $response, $args) us
 	return $response->withStatus(200);
 });
 
-$app->get('/contato', function (Request $request, Response $response, $args) use ($res_path) {
-	$page = new Page([
+$app->get('/contato', function (Request $request, Response $response, $args) {
+	$page = new PageEcommerce([
 		'data' => [
-			'site_titulo'    => 'Contato',
-			'res_path'    => $res_path
+			'site_titulo'    => 'Contato'
 		]
 	]);
 
