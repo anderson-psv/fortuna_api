@@ -129,3 +129,24 @@ body, ul, li, p{
     padding: 0px 45px 0px 45px;
     text-align: justify;
 }
+
+.conteiner-login{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card-login{
+    background-color: aquamarine;
+    width:60%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    padding:30px 35px;
+    border-radius:20px;
+    box-shadow: 0px 10px 40px  #2b282856;
+    
+}
