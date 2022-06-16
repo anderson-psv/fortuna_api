@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Log in (v2)</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{$res_path}plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{$res_path}plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css">
+</head>
+<script>
+    function requestLogin() {
+        email = document.getElementById("email").value;
+        senha = document.getElementById("senha").value;
+
+        if(!email) {
+            alert("Por favor, informe o email");
+            return;
+        }
+
+        if(!senha) {
+            alert("Por favor, informe a senha");
+            return;
+        }
+
+        $.post("/admin/login", {
+            login: $("#login").val(),
+            senha: $("#senha").val()
+        }, function (data) {
+            if (data.status == "ok") {
+                window.location.href = "/admin/home";
+            } else {
+                $("#erro").html(data.msg);
+            }
+        }, "json");
+    }
+</script>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="{$res_path}admin/login" class="h1"><b>Admin</b>Fortuna</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Entre para iniciar a sessão</p>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Senha">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12" style="justify-content: center">
+                        <button type="button" class="btn btn-primary btn-block">Entrar</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+</body>
+
+</html>

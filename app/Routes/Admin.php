@@ -2,6 +2,7 @@
 
 use Fortuna\Page;
 use Fortuna\Model\Produto;
+use Fortuna\Model\UsuarioAdmin;
 use Lazer\Classes\Database as Lazer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -9,9 +10,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 $resource_path = './../../res/admin/';
 
 $app->get('/admin', function (Request $request, Response $response, $args) use ($resource_path) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
     $page = new Page([
         'data' => [
-            'site_titulo' => 'Login',
+            'site_titulo' => 'Home',
             'res_path'    => $resource_path
         ]
     ], '/views/admin/');
@@ -21,8 +24,35 @@ $app->get('/admin', function (Request $request, Response $response, $args) use (
     return $response->withStatus(200);
 });
 
+$app->get('/admin/login', function (Request $request, Response $response, $args) use ($resource_path) {
+
+    $page = new Page([
+        'header' => false,
+        'footer' => false,
+        'data' => [
+            'site_titulo' => 'Login',
+            'res_path'    => $resource_path
+        ]
+    ], '/views/admin/');
+
+    $page->setTpl("login");
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/login', function (Request $request, Response $response, $args) use ($resource_path) {
+
+    // try {
+    //     $dados = json_decode($request->getBody()->getContents(), true);
+    //     $usuario = UsuarioAdmin::login($dados['email'], $dados['senha']);
+    //     return $response->withStatus(302)->withHeader('Location', '/admin');
+    // }
+
+    return $response->withStatus(200);
+});
+
 $app->get('/admin/produtos', function (Request $request, Response $response, $args) use ($resource_path) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin();
 
     $produtos = Lazer::table(Produto::$tabela_db)
         ->findAll()
@@ -36,6 +66,7 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
 
     $page = new Page([
         'header' => false,
+
         'data' => [
             'site_titulo' => 'Produtos',
             'res_path'    => $resource_path
@@ -50,10 +81,11 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
 });
 
 $app->get('/admin/produto/cadastro', function (Request $request, Response $response, $args) use ($resource_path) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
 
     $page = new Page([
         'header' => false,
+        'footer' => false,
         'data' => [
             'site_titulo' => 'Cadastrar Produto',
             'res_path'    => './.' . $resource_path
@@ -66,7 +98,7 @@ $app->get('/admin/produto/cadastro', function (Request $request, Response $respo
 });
 
 $app->post('/admin/produto/cadastro', function (Request $request, Response $response, $args) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
 
     try {
         $dados = json_decode($request->getBody()->getContents(), true);
@@ -92,7 +124,7 @@ $app->post('/admin/produto/cadastro', function (Request $request, Response $resp
 });
 
 $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
     $idproduto = (int) $request->getAttribute('idproduto');
 
     if (empty($idproduto)) {
@@ -106,6 +138,7 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
 
     $page = new Page([
         'header' => false,
+        'footer' => false,
         'data' => [
             'site_titulo' => 'Alterar Produto',
             'res_path'    => './.' . $resource_path
@@ -118,7 +151,7 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
 });
 
 $app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
 
     try {
         $idproduto = $request->getAttribute('idproduto');
@@ -152,7 +185,7 @@ $app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Res
 });
 
 $app->post('/admin/produto/remover/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
-    #UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
 
     try {
         $idproduto = $request->getAttribute('idproduto');
