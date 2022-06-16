@@ -8,5 +8,10 @@
         "nome": "string",
         "email": "string",
         "senha": "string"
+    },
+    "f_produto": {
+        "descrica": "string",
+        "valor": "double",
+        "status": "string"
     }
 }
