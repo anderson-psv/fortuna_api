@@ -18,6 +18,7 @@ class UsuarioAdmin implements iModel
     public static string $tabela_db = 'f_usuario_admin';
     public static array $campos_db  = [
         'id',
+        'nome',
         'email',
         'senha'
     ];
@@ -176,7 +177,7 @@ class UsuarioAdmin implements iModel
         return $usuario;
     }
 
-    public static function checkLogin($redirect_home = '/admin')
+    public static function checkLogin($redirect_path = null)
     {
         if (
             !isset($_SESSION[self::SESSION])
@@ -185,8 +186,8 @@ class UsuarioAdmin implements iModel
             ||
             !(int)$_SESSION[self::SESSION]['id'] > 0
         ) {
-            if ($redirect_home) {
-                header('Location: /admin');
+            if ($redirect_path) {
+                header('Location: ' . $redirect_path);
                 exit;
             }
             return false;
@@ -199,10 +200,25 @@ class UsuarioAdmin implements iModel
     {
         $db_usuario = Lazer::table(self::$tabela_db)
             ->where('email', '=', $email)
-            ->find()
+            ->limit(1)
+            ->findAll()
             ->asArray();
 
         if (!$db_usuario) {
+            $num_usuarios = Lazer::table(self::$tabela_db)->count();
+
+            if ($num_usuarios == 0) {
+                $usuario = new self([
+                    'nome' => 'Administrador',
+                    'email' => $email,
+                    'senha' => $password
+                ]);
+
+                if ($usuario->save()) {
+                    return $usuario->setSenha('');
+                }
+            }
+
             throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
 
@@ -210,9 +226,8 @@ class UsuarioAdmin implements iModel
             $usuario = new self();
 
             $usuario->setDados($db_usuario);
-
             //Remove o hash para nao salvar na sessão
-            unset($db_usuario['senha']);
+            $usuario->setSenha('');
 
             $_SESSION[self::SESSION] = $usuario->getDados();
 
