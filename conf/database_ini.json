@@ -1,5 +1,5 @@
 {
-    "f_usuario": {
+    "f_usuario_admin": {
         "nome": "string",
         "email": "string",
         "senha": "string"
