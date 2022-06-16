@@ -24,10 +24,16 @@ class UsuarioAdmin implements iModel
         'senha'
     ];
 
+    private string $nome  = '';
+    private string $email = '';
+    private string $senha = '';
+
     public function setDados(array $dados, bool $validar = true)
     {
         foreach (self::$campos_db as $campo) {
-            $this->$campo = $dados[$campo];
+            if (isset($dados[$campo])) {
+                $this->$campo = Functions::modelCasting(gettype($this->$campo), $dados[$campo]);
+            }
         }
 
         if ($validar) {
@@ -225,6 +231,8 @@ class UsuarioAdmin implements iModel
             ->findAll()
             ->asArray();
 
+        $db_usuario = $db_usuario[0] ?: [];
+
         if (!$db_usuario) {
             $num_usuarios = Lazer::table(self::$tabela_db)->count();
             if ($num_usuarios == 0) {
@@ -252,9 +260,9 @@ class UsuarioAdmin implements iModel
             $_SESSION[self::SESSION] = $usuario->getDados();
 
             return $usuario;
-        } else {
-            throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
         }
+
+        throw new \Exception("Usuário inexistente ou senha inválida.", 7400);
     }
 
     public static function verifyLogin($inadmin = true)
