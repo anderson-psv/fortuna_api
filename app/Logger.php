@@ -3,7 +3,6 @@
 namespace Fortuna;
 
 use Stringable;
-use function error_log;
 use Psr\Log\AbstractLogger;
 
 class Logger extends AbstractLogger
