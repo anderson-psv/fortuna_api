@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> Fortuna | Ecommerce</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{$res_path}plugins/fontawesome-free/css/all.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{$res_path}plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+</head>
+
+<script>
+    function editarProduto($idproduto) {
+        window.location.href = "/admin/produtos/alterar/" + $idproduto;
+    }
+
+    function removerProduto($idproduto) {
+        $.post({
+            type: "POST",
+            url: "/admin/produto/remover/" + $idproduto,
+            success: function (data) {
+                if (data.status == "success") {
+                    window.location.href = "/admin/produtos";
+                } else {
+                    if (data.message == undefined) {
+                        window.alert("Erro ao remover produto");
+                        return;
+                    }
+                    window.alert(data.message);
+                }
+            },
+        });
+    }
+</script>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Produtos</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-primary float-left"
+                                onclick="window.location.href = '/admin/produtos/adicionar'">
+                                Adicionar Produto
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>descricao</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loop="$produtos"}
+                                    <tr>
+                                        <td>{$value.id}</td>
+                                        <td>{$value.descricao}</td>
+                                        <td>R$ {$value.valor}</td>
+                                        <td>
+                                            {if="$value.status == 'ATIVO'"}
+                                            <span class="badge badge-success">ATIVO</span>
+                                            {else}
+                                            <span class="badge badge-danger">INATIVO</span>
+                                            {/if}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#modal-default"
+                                                onclick="javascript:editarProduto({$value.id})">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="buton" class="btn btn-danger"
+                                                onclick="javascript:removerProduto({$value.id})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                    {/loop}
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div2>
+<!-- /.content-wrapper -->
