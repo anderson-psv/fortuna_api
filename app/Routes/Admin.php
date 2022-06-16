@@ -56,7 +56,7 @@ $app->get('/admin/produto/cadastro', function (Request $request, Response $respo
         'header' => false,
         'data' => [
             'site_titulo' => 'Cadastrar Produto',
-            'res_path'    => $resource_path
+            'res_path'    => './.' . $resource_path
         ]
     ], '/views/admin/');
 
@@ -108,7 +108,7 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
         'header' => false,
         'data' => [
             'site_titulo' => 'Alterar Produto',
-            'res_path'    => $resource_path
+            'res_path'    => './.' . $resource_path
         ]
     ], '/views/admin/');
 
