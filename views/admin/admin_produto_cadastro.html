@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | General Form Elements</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{$res_path}plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css">
+</head>
+<script>
+    function inserirProduto() {
+        desricao = document.getElementById("descricao");
+        valor = document.getElementById("valor");
+        status = document.getElementById("status");
+
+        $.post({
+            type: "POST",
+            url: "/admin/produto/cadastro",
+            data: JSON.stringify({
+                desricao: desricao,
+                valor: valor,
+                status: status
+            }), // or JSON.stringify ({name: 'jonas'}),
+            success: function (data) {
+                console.log(data)
+                if (data.status == "success") {
+                    window.location.href = "/admin/produtos";
+                } else {
+                    window.alert(data.message);
+                }
+            },
+            contentType: "application/json",
+            dataType: "json",
+        });
+    }
+</script>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Cadastro de Produto</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="descricao">Descrição</label>
+                                <input type="text" class="form-control" id="descricao" placeholder="Descrição"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="valor">Valor</label>
+                                <input type="number" step="0,1" min="0" class="form-control" id="valor" placeholder="Valor"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="custom-select rounded-50" id="status">
+                                    <option>ATIVO</option>
+                                    <option>INATIVO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary" onclick="javascript:inserirProduto()">Submit</button>
+                        </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
