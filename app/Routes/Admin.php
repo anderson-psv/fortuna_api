@@ -24,6 +24,16 @@ $app->get('/admin', function (Request $request, Response $response, $args) use (
 $app->get('/admin/produtos', function (Request $request, Response $response, $args) use ($resource_path) {
     #UsuarioAdmin::checkLogin();
 
+    $produtos = Lazer::table(Produto::$tabela_db)
+        ->findAll()
+        ->asArray();
+    
+    foreach ($produtos as &$produto) {
+        if($produto['valor']) {
+            $produto['valor'] = number_format($produto['valor'], 2, ',', '.');
+        }
+    }
+
     $page = new Page([
         'header' => false,
         'data' => [
@@ -33,14 +43,7 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
     ], '/views/admin/');
 
     $page->setTpl("admin_produtos", [
-        'produtos' => [
-            0 => [
-                'id'       => 1,
-                'descricao' => 'Descrição do produto 1',
-                'valor'    => 10,
-                'status'   => 'ATIVO'
-            ]
-        ]
+        'produtos' => $produtos?: []
     ]);
 
     return $response->withStatus(200);
