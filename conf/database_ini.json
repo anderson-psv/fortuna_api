@@ -10,7 +10,7 @@
         "senha": "string"
     },
     "f_produto": {
-        "descrica": "string",
+        "descricao": "string",
         "valor": "double",
         "status": "string"
     }
