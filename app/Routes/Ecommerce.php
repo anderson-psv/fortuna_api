@@ -5,12 +5,13 @@ use Fortuna\Page;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$app->get('/', function (Request $request, Response $response, $args) {
-	#$params = $request->getQueryParams();
-	#$body   = $request->getBody()->getContents();
+$res_path = './../';
+
+$app->get('/', function (Request $request, Response $response, $args) use ($res_path) {
 	$page = new Page([
 		'data' => [
-			'site_titulo' 	 => 'Home'
+			'site_titulo' => 'Home',
+			'res_path'    => $res_path
 		]
 	]);
 
@@ -21,10 +22,11 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
 
 
-$app->get('/sobre', function (Request $request, Response $response, $args) {
+$app->get('/sobre', function (Request $request, Response $response, $args) use ($res_path) {
 	$page = new Page([
 		'data' => [
-			'site_titulo' => 'Sobre'
+			'site_titulo' => 'Sobre',
+			'res_path'    => $res_path
 		]
 	]);
 
@@ -33,10 +35,11 @@ $app->get('/sobre', function (Request $request, Response $response, $args) {
 	return $response->withStatus(200);
 });
 
-$app->get('/produtos', function (Request $request, Response $response, $args) {
+$app->get('/produtos', function (Request $request, Response $response, $args) use ($res_path) {
 	$page = new Page([
 		'data' => [
-			'site_titulo'    => 'Produtos'
+			'site_titulo' => 'Produtos',
+			'res_path'    => $res_path
 		]
 	]);
 
@@ -45,10 +48,11 @@ $app->get('/produtos', function (Request $request, Response $response, $args) {
 	return $response->withStatus(200);
 });
 
-$app->get('/contato', function (Request $request, Response $response, $args) {
+$app->get('/contato', function (Request $request, Response $response, $args) use ($res_path) {
 	$page = new Page([
 		'data' => [
-			'site_titulo'    => 'Contato'
+			'site_titulo'    => 'Contato',
+			'res_path'    => $res_path
 		]
 	]);
 
