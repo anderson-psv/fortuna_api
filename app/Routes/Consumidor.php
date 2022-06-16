@@ -5,7 +5,7 @@ use Fortuna\Model\Consumidor;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$res_path = './../../res/';
+$res_path = './../';
 
 $app->get('/consumidor/login', function (Request $request, Response $response, $args) use ($res_path) {
 
