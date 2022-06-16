@@ -102,7 +102,6 @@ class Produto implements iModel
     public function validarDados()
     {
         try {
-
             if (empty($this->descricao)) {
                 throw new Exception('O campo descrição é obrigatório');
             }
