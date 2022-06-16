@@ -1,6 +1,7 @@
 <?php
 
 use Fortuna\Page;
+use Fortuna\Model\Produto;
 use Lazer\Classes\Database as Lazer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -61,11 +62,13 @@ $app->get('/admin/produto/cadastro', function (Request $request, Response $respo
     return $response->withStatus(200);
 });
 
-$app->post('/admin/produto/cadastro', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->post('/admin/produto/cadastro', function (Request $request, Response $response, $args) {
     #UsuarioAdmin::checkLogin();
 
     try {
-        $produto = new Produto();
+        $dados = json_decode($request->getBody()->getContents(), true);
+
+        $produto = new Produto($dados);
 
         if (!$produto->save()) {
             throw new \Exception('Erro ao salvar produto', 7400);
