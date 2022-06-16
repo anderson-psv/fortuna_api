@@ -27,9 +27,9 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
     $produtos = Lazer::table(Produto::$tabela_db)
         ->findAll()
         ->asArray();
-    
+
     foreach ($produtos as &$produto) {
-        if($produto['valor']) {
+        if ($produto['valor']) {
             $produto['valor'] = number_format($produto['valor'], 2, ',', '.');
         }
     }
@@ -43,7 +43,7 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
     ], '/views/admin/');
 
     $page->setTpl("admin_produtos", [
-        'produtos' => $produtos?: []
+        'produtos' => $produtos ?: []
     ]);
 
     return $response->withStatus(200);
@@ -87,7 +87,6 @@ $app->post('/admin/produto/cadastro', function (Request $request, Response $resp
             'message' => $th->getMessage()
         ]));
     }
-
 
     return $response->withStatus(200);
 });
