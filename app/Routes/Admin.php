@@ -90,3 +90,63 @@ $app->post('/admin/produto/cadastro', function (Request $request, Response $resp
 
     return $response->withStatus(200);
 });
+
+$app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+    #UsuarioAdmin::checkLogin();
+    $idproduto = (int) $request->getAttribute('idproduto');
+
+    if (empty($idproduto)) {
+        header('Location: /admin/produtos');
+        exit;
+    }
+
+    $produto = (new Produto())
+        ->getProdutoDb($idproduto)
+        ->getDados();
+
+    $page = new Page([
+        'header' => false,
+        'data' => [
+            'site_titulo' => 'Alterar Produto',
+            'res_path'    => $resource_path
+        ]
+    ], '/views/admin/');
+
+    $page->setTpl("admin_produto_editar", $produto);
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+    #UsuarioAdmin::checkLogin();
+
+    try {
+        $idproduto = $request->getAttribute('idproduto');
+
+        if (empty($idproduto)) {
+            throw new Exception('ID produto inváldo', 7400);
+        }
+
+        $dados = json_decode($request->getBody()->getContents(), true);
+
+        $produto = (new Produto())
+            ->getProdutoDb($idproduto)
+            ->setDados($dados);
+        
+        if(!$produto->save()) {
+            throw new Exception('Erro ao alterar produto', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Produto alterado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
