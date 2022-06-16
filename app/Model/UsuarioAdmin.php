@@ -4,6 +4,7 @@ namespace Fortuna\Model;
 
 use Exception;
 use Fortuna\iModel;
+use Fortuna\Functions;
 use Lazer\Classes\Database as Lazer;
 
 class UsuarioAdmin implements iModel
@@ -88,12 +89,21 @@ class UsuarioAdmin implements iModel
 
     public function validarDados()
     {
-        if (empty($this->email)) {
-            throw new Exception("Informe o e-mail", 7400);
-        }
+        try {
+            if (empty($this->email)) {
+                throw new Exception("Informe o e-mail", 7400);
+            }
 
-        if (empty($this->senha)) {
-            throw new Exception("Informe a senha", 7400);
+            if (empty($this->senha)) {
+                throw new Exception("Informe a senha", 7400);
+            }
+
+            if (!Functions::isHash($this->senha)) {
+                $this->senha = Functions::getPasswordHash($this->senha);
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage());
+            throw $th;
         }
     }
 
