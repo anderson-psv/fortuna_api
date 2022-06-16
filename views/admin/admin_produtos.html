@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site_titulo}</title>
+    <title>{$site_titulo}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -18,9 +18,6 @@
 </head>
 
 <script>
-    function editarProduto($idproduto) {
-        window.location.href = "/admin/produtos/alterar/" + $idproduto;
-    }
 
     function removerProduto($idproduto) {
         $.post({
@@ -84,11 +81,11 @@
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#modal-default"
-                                                onclick="javascript:editarProduto({$value.id})">
+                                                onclick="window.location.href = '/admin/produtos/alterar/{$value.id}'">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <button type="buton" class="btn btn-danger"
-                                                onclick="javascript:removerProduto({$value.id})">
+                                                onclick="javascript:removerProduto('{$value.id}')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
