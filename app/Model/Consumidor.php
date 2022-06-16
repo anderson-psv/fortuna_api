@@ -201,15 +201,17 @@ class Consumidor implements iModel
         }
     }
 
-    public static function getFromSession()
+    public static function getFromSession(string $campo = null)
     {
-        $usuario = new self();
+        if (isset($_SESSION[self::SESSION]) && (int)$_SESSION[self::SESSION]['id'] > 0) {
+            if ($campo) {
+                return $_SESSION[self::SESSION][$campo] ?: null;
+            }
 
-        if (isset($_SESSION[self::SESSION]) && (int)$_SESSION[self::SESSION]['idusuario'] > 0) {
-            $usuario->setDados($_SESSION[self::SESSION]);
+            return $_SESSION[self::SESSION];
         }
 
-        return $usuario;
+        throw new Exception("Sessão não ativa!", 7400);
     }
 
     public static function checkLogin($redirect_home = false)
