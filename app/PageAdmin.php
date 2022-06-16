@@ -18,13 +18,16 @@ class PageAdmin
 
     public function __construct($opts = array(), $tpl_dir = '/views/admin/')
     {
-        $opts['data']['admin_nome'] = UsuarioAdmin::getFromSession('nome');
+        $session = UsuarioAdmin::getFromSession();
+
+        foreach ($session as $key => $value) {
+            $opts['data']['admin_' . $key] = $value;
+        }
 
         if ($opts['sub_res']) {
             $opts['data']['res_path'] = './../../res/admin/';
-        }
-        else {
-            $opts['data']['res_path']   = './../res/admin/';
+        } else {
+            $opts['data']['res_path'] = './../res/admin/';
         }
 
         $this->options = array_merge($this->defaults, $opts);
