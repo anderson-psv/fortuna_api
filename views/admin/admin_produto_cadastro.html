@@ -16,21 +16,21 @@
 </head>
 <script>
     function inserirProduto() {
-        desricao = document.getElementById("descricao");
-        valor = document.getElementById("valor");
-        status = document.getElementById("status");
+        descricao = document.getElementById("descricao").value;
+        valor = document.getElementById("valor").value;
+        status = document.getElementById("status").value;
 
         $.post({
             type: "POST",
             url: "/admin/produto/cadastro",
             data: JSON.stringify({
-                desricao: desricao,
+                descricao: descricao,
                 valor: valor,
                 status: status
             }), // or JSON.stringify ({name: 'jonas'}),
             success: function (data) {
-                console.log(data)
                 if (data.status == "success") {
+                    window.alert("Produto cadastrado");
                     window.location.href = "/admin/produtos";
                 } else {
                     window.alert(data.message);
