@@ -100,9 +100,12 @@ class UsuarioAdmin implements iModel
     {
         try {
             $db_user = Lazer::table(self::$tabela_db)
-                ->where('idusuario', '=', $idusuario)
-                ->find()
+                ->where('id', '=', $idusuario)
+                ->limit(1)
+                ->findAll()
                 ->asArray();
+
+            $db_user = $db_user[0] ?: [];
 
             if (!$db_user) {
                 throw new Exception("Usuário não encontrado", 7400);

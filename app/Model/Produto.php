@@ -119,16 +119,19 @@ class Produto implements iModel
         }
     }
 
-    public function getProdutoDb(string $idproduto)
+    public function getProdutoDb(int $idproduto)
     {
         try {
             $db_produto = Lazer::table(self::$tabela_db)
-                ->where('idproduto', '=', $idproduto)
-                ->find()
+                ->where('id', '=', $idproduto)
+                ->limit(1)
+                ->findAll()
                 ->asArray();
 
+            $db_produto = $db_produto[0] ?: [];
+
             if (!$db_produto) {
-                throw new Exception("Usuário não encontrado", 7400);
+                throw new Exception("Produto não encontrado", 7400);
             }
 
             $this->setDados($db_produto, false);
