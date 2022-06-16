@@ -42,11 +42,24 @@ $app->get('/admin/login', function (Request $request, Response $response, $args)
 
 $app->post('/admin/login', function (Request $request, Response $response, $args) use ($resource_path) {
 
-    // try {
-    //     $dados = json_decode($request->getBody()->getContents(), true);
-    //     $usuario = UsuarioAdmin::login($dados['email'], $dados['senha']);
-    //     return $response->withStatus(302)->withHeader('Location', '/admin');
-    // }
+    try {
+        $dados = json_decode($request->getBody()->getContents(), true);
+
+        $usuario = UsuarioAdmin::login($dados['email'], $dados['senha']);
+
+        if (!$usuario) {
+            throw new Exception('Usuário ou senha inválidos', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status' => 'success'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status' => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
 
     return $response->withStatus(200);
 });
