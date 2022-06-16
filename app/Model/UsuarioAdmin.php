@@ -65,6 +65,17 @@ class UsuarioAdmin implements iModel
         return $this->idusuario;
     }
 
+    public function setNome(string $nome)
+    {
+        $this->nome = $nome;
+        return $this;
+    }
+
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
     public function setEmail(string $email)
     {
         $this->email = $email;
@@ -216,7 +227,6 @@ class UsuarioAdmin implements iModel
 
         if (!$db_usuario) {
             $num_usuarios = Lazer::table(self::$tabela_db)->count();
-
             if ($num_usuarios == 0) {
                 $usuario = new self([
                     'nome' => 'Administrador',
