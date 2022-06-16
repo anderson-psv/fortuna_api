@@ -21,26 +21,35 @@
         email = document.getElementById("email").value;
         senha = document.getElementById("senha").value;
 
-        if(!email) {
+        if (!email) {
             alert("Por favor, informe o email");
             return;
         }
 
-        if(!senha) {
+        if (!senha) {
             alert("Por favor, informe a senha");
             return;
         }
 
-        $.post("/admin/login", {
-            login: $("#login").val(),
-            senha: $("#senha").val()
-        }, function (data) {
-            if (data.status == "ok") {
-                window.location.href = "/admin/home";
-            } else {
-                $("#erro").html(data.msg);
-            }
-        }, "json");
+        $.post({
+            type: "POST",
+            url: "/admin/login",
+            data: JSON.stringify({
+                email: email,
+                senha: senha
+            }), // or JSON.stringify ({name: 'jonas'}),
+            success: function (data) {
+                console.log(data)
+                if (data.status == "success") {
+                    window.location.href = "/admin";
+                } else {
+                    alert(data.message);
+                }
+                return;
+            },
+            contentType: "application/json",
+            dataType: "json",
+        });
     }
 </script>
 
@@ -53,28 +62,30 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Entre para iniciar a sessão</p>
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                <form action="javascript:requestLogin()">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" id="senha" placeholder="Senha">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12" style="justify-content: center">
-                        <button type="button" class="btn btn-primary btn-block" onclick="javascript:requestLogin">Entrar</button>
+                    <div class="row">
+                        <div class="col-12" style="justify-content: center">
+                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                        </div>
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
-                </div>
+                </form>
             </div>
             <!-- /.card-body -->
         </div>
@@ -83,11 +94,11 @@
     <!-- /.login-box -->
 
     <!-- jQuery -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="{$res_path}plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{$res_path}plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
+    <script src="{$res_path}dist/js/adminlte.min.js"></script>
 </body>
 
 </html>
