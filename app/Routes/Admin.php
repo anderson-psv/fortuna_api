@@ -1,46 +1,43 @@
 <?php
 
-use Fortuna\Page;
+use Fortuna\PageAdmin;
 use Fortuna\Model\Produto;
 use Fortuna\Model\UsuarioAdmin;
 use Lazer\Classes\Database as Lazer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-$resource_path = './../../res/admin/';
 
-$app->get('/admin', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->get('/admin', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
-    $page = new Page([
+    $page = new PageAdmin([
         'data' => [
-            'site_titulo' => 'Home',
-            'res_path'    => $resource_path
+            'site_titulo' => 'Home'
         ]
-    ], '/views/admin/');
+    ]);
 
     $page->setTpl("index");
 
     return $response->withStatus(200);
 });
 
-$app->get('/admin/login', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->get('/admin/login', function (Request $request, Response $response, $args) {
 
-    $page = new Page([
+    $page = new PageAdmin([
         'header' => false,
         'footer' => false,
         'data' => [
-            'site_titulo' => 'Login',
-            'res_path'    => $resource_path
+            'site_titulo' => 'Login'
         ]
-    ], '/views/admin/');
+    ]);
 
     $page->setTpl("login");
 
     return $response->withStatus(200);
 });
 
-$app->post('/admin/login', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->post('/admin/login', function (Request $request, Response $response, $args) {
 
     try {
         $dados = json_decode($request->getBody()->getContents(), true);
@@ -64,7 +61,7 @@ $app->post('/admin/login', function (Request $request, Response $response, $args
     return $response->withStatus(200);
 });
 
-$app->get('/admin/produtos', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->get('/admin/produtos', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin();
 
     $produtos = Lazer::table(Produto::$tabela_db)
@@ -77,14 +74,13 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
         }
     }
 
-    $page = new Page([
+    $page = new PageAdmin([
         'header' => false,
 
         'data' => [
-            'site_titulo' => 'Produtos',
-            'res_path'    => $resource_path
+            'site_titulo' => 'Produtos'
         ]
-    ], '/views/admin/');
+    ]);
 
     $page->setTpl("admin_produtos", [
         'produtos' => $produtos ?: []
@@ -93,17 +89,17 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
     return $response->withStatus(200);
 });
 
-$app->get('/admin/produto/cadastro', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->get('/admin/produto/cadastro', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
-    $page = new Page([
+    $page = new PageAdmin([
         'header' => false,
         'footer' => false,
+        'sub_res' => true,
         'data' => [
-            'site_titulo' => 'Cadastrar Produto',
-            'res_path'    => './.' . $resource_path
-        ]
-    ], '/views/admin/');
+            'site_titulo' => 'Cadastrar Produto'
+        ],
+    ]);
 
     $page->setTpl("admin_produto_cadastro", []);
 
@@ -136,7 +132,7 @@ $app->post('/admin/produto/cadastro', function (Request $request, Response $resp
     return $response->withStatus(200);
 });
 
-$app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
     $idproduto = (int) $request->getAttribute('idproduto');
 
@@ -149,21 +145,21 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
         ->getProdutoDb($idproduto)
         ->getDados();
 
-    $page = new Page([
-        'header' => false,
-        'footer' => false,
+    $page = new PageAdmin([
+        'header'  => false,
+        'footer'  => false,
+        'sub_res' => true,
         'data' => [
-            'site_titulo' => 'Alterar Produto',
-            'res_path'    => './.' . $resource_path
+            'site_titulo' => 'Alterar Produto'
         ]
-    ], '/views/admin/');
+    ]);
 
     $page->setTpl("admin_produto_editar", $produto);
 
     return $response->withStatus(200);
 });
 
-$app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
     try {
@@ -197,7 +193,7 @@ $app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Res
     return $response->withStatus(200);
 });
 
-$app->post('/admin/produto/remover/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->post('/admin/produto/remover/{idproduto}', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
     try {
