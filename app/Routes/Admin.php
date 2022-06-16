@@ -117,7 +117,7 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
     return $response->withStatus(200);
 });
 
-$app->post('/admin/produtos/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+$app->post('/admin/produto/alterar/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
     #UsuarioAdmin::checkLogin();
 
     try {
@@ -132,14 +132,38 @@ $app->post('/admin/produtos/alterar/{idproduto}', function (Request $request, Re
         $produto = (new Produto())
             ->getProdutoDb($idproduto)
             ->setDados($dados);
-        
-        if(!$produto->save()) {
+
+        if (!$produto->save()) {
             throw new Exception('Erro ao alterar produto', 7400);
         }
 
         $response->getBody()->write(json_encode([
             'status'  => 'success',
             'message' => 'Produto alterado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/produto/remover/{idproduto}', function (Request $request, Response $response, $args) use ($resource_path) {
+    #UsuarioAdmin::checkLogin();
+
+    try {
+        $idproduto = $request->getAttribute('idproduto');
+        $produto = (new Produto());
+        if (!$produto->delete($idproduto)) {
+            throw new Exception('Erro ao remover produto', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Produto removido com sucesso!'
         ]));
     } catch (\Throwable $th) {
         $response->getBody()->write(json_encode([

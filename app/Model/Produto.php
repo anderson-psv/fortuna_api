@@ -187,9 +187,12 @@ class Produto implements iModel
             if (!$row->delete()) {
                 throw new Exception("Não foi possivel deletar o produto!", 7400);
             }
+            return true;
         } catch (\Throwable $th) {
             error_log($th->getMessage());
             throw new Exception("Erro ao deletar produto", 7400);
         }
+
+        return false;
     }
 }
