@@ -173,15 +173,19 @@ class UsuarioAdmin implements iModel
         return $usuario;
     }
 
-    public static function checkLogin($inadmin = true)
+    public static function checkLogin($redirect_home = '/admin')
     {
         if (
             !isset($_SESSION[self::SESSION])
             ||
             !$_SESSION[self::SESSION]
             ||
-            !(int)$_SESSION[self::SESSION]['idusuario'] > 0
+            !(int)$_SESSION[self::SESSION]['id'] > 0
         ) {
+            if ($redirect_home) {
+                header('Location: /admin');
+                exit;
+            }
             return false;
         }
 
