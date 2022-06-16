@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Sao_Paulo');
+
 session_start();
 define('BASE_DIR', __DIR__);
 define('LAZER_DATA_PATH', BASE_DIR . '/database/');
