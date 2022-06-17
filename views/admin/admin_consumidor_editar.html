@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css">
 </head>
 <script>
-    function editarUsuario() {
-        idusuario = '{$id}';
+    function editarConsumidor() {
+        idconsumidor = '{$id}';
         nome = document.getElementById("nome").value;
         email = document.getElementById("email").value;
         senha = document.getElementById("senha").value;
@@ -24,7 +24,7 @@
 
         $.post({
             type: "POST",
-            url: "/admin/usuario/alterar/" + idusuario,
+            url: "/admin/consumidor/alterar/" + idconsumidor,
             data: JSON.stringify({
                 nome: nome,
                 email: email,
@@ -34,7 +34,7 @@
             success: function (data) {
                 console.log(data)
                 if (data.status == "success") {
-                    window.location.href = "/admin/usuarios";
+                    window.location.href = "/admin/consumidors";
                 } else {
                     window.alert(data.message);
                 }
@@ -54,15 +54,15 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Alterar Usuario</h3>
+                        <h3 class="card-title">Alterar Consumidor</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="descricao">ID Usuario: {$id}</label>
+                            <label for="descricao">ID Consumidor: {$id}</label>
                         </div>
-                        <form action="javascript:editarUsuario()">
+                        <form action="javascript:editarConsumidor()">
                             <div class="form-group">
                                 <label for="nome">Nome</label>
                                 <input type="text" class="form-control" id="nome" placeholder="Nome" required
@@ -90,7 +90,7 @@
 
                     <div class="card-footer">
                         <button type="button" class="btn btn-primary"
-                            onclick="javascript:editarUsuario()">Submit</button>
+                            onclick="javascript:editarConsumidor()">Submit</button>
                     </div>
                 </div>
                 <!-- /.card -->
