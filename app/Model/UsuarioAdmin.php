@@ -225,8 +225,7 @@ class UsuarioAdmin implements iModel
 
             return $_SESSION[self::SESSION];
         }
-
-        throw new Exception("Sessão não ativa!", 7400);
+        return [];
     }
 
     public static function checkLogin($redirect_path = null)
