@@ -68,15 +68,15 @@ class UsuarioAdmin implements iModel
         return $dados;
     }
 
-    public function setIdusuario(string $idusuario)
+    public function setId(string $id)
     {
-        $this->idusuario = $idusuario;
+        $this->id = $id;
         return $this;
     }
 
-    public function getIdusuario()
+    public function getId()
     {
-        return $this->idusuario;
+        return $this->id;
     }
 
     public function setNome(string $nome)
@@ -176,7 +176,7 @@ class UsuarioAdmin implements iModel
     public function save()
     {
         $this->validarDados();
-        $this->verificarEmailUnico($this->email);
+        $this->verificarEmailUnico();
 
         $is_insert = ($this->id < 0);
         $table     = Lazer::table(self::$tabela_db);
@@ -270,7 +270,6 @@ class UsuarioAdmin implements iModel
         if (!$db_usuario) {
             $num_usuarios = Lazer::table(self::$tabela_db)->count();
             if ($num_usuarios == 0) {
-                error_log('teste123');
 
                 $usuario = new self([
                     'nome' => 'Administrador',
@@ -382,11 +381,17 @@ class UsuarioAdmin implements iModel
     }
     /* Sucesso Fim*/
 
-    public function verificarEmailUnico(string $email)
+    public function verificarEmailUnico()
     {
         try {
-            $ja_existe = Lazer::table(self::$tabela_db)
-                ->where('email', '=', $email)
+            $table = Lazer::table(self::$tabela_db);
+
+            if ($this->id) {
+                $table->where('id', '!=', $this->id);
+            }
+
+            $ja_existe = $table
+                ->andwhere('email', '=', $this->email)
                 ->limit(1)
                 ->findAll()
                 ->asArray();
@@ -396,6 +401,7 @@ class UsuarioAdmin implements iModel
         } catch (\Throwable $th) {
             error_log($th->getMessage());
         }
+
         throw new Exception("Email já cadastrado!", 7400);
     }
 
