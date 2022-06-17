@@ -61,6 +61,12 @@ $app->post('/admin/login', function (Request $request, Response $response, $args
     return $response->withStatus(200);
 });
 
+$app->get('/admin/logout', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::logout();
+    header('Location: /admin/login');
+    exit;
+});
+
 $app->get('/admin/produtos', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin();
 
@@ -221,6 +227,10 @@ $app->get('/admin/usuarios', function (Request $request, Response $response, $ar
         ->findAll()
         ->asArray();
 
+    foreach ($usuarios as &$usuario) {
+        unset($usuario['senha']);
+    }
+
     $page = new PageAdmin([
         'header'  => false,
         'sub_res' => true,
@@ -229,7 +239,10 @@ $app->get('/admin/usuarios', function (Request $request, Response $response, $ar
         ]
     ]);
 
-    $page->setTpl("admin_usuarios", $usuarios);
+    var_dump($usuarios);
+    $page->setTpl("admin_usuarios", [
+        'usuarios' => $usuarios
+    ]);
 
     return $response->withStatus(200);
 });
@@ -237,10 +250,6 @@ $app->get('/admin/usuarios', function (Request $request, Response $response, $ar
 $app->get('/admin/usuarios/cadastro', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
-    $usuarios = Lazer::table(UsuarioAdmin::$tabela_db)
-        ->findAll()
-        ->asArray();
-
     $page = new PageAdmin([
         'header'  => false,
         'sub_res' => true,
@@ -249,7 +258,7 @@ $app->get('/admin/usuarios/cadastro', function (Request $request, Response $resp
         ]
     ]);
 
-    $page->setTpl("admin_usuario_cadastro", $usuarios);
+    $page->setTpl("admin_usuario_cadastro");
 
     return $response->withStatus(200);
 });
