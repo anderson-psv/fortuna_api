@@ -205,6 +205,8 @@ class Consumidor implements iModel
             if (!$row->delete()) {
                 throw new Exception("Não foi possivel deletar o usuário!", 7400);
             }
+
+            return true;
         } catch (\Throwable $th) {
             error_log($th->getMessage());
             throw new Exception("Erro ao deletar usuário", 7400);
