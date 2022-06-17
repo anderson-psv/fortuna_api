@@ -234,7 +234,7 @@ $app->get('/admin/consumidores', function (Request $request, Response $response,
         'header'  => false,
         'sub_res' => true,
         'data' => [
-            'site_titulo' => 'Consumidors'
+            'site_titulo' => 'Consumidores'
         ]
     ]);
 
@@ -252,7 +252,7 @@ $app->get('/admin/consumidores/cadastro', function (Request $request, Response $
         'header'  => false,
         'sub_res' => true,
         'data' => [
-            'site_titulo' => 'Consumidors'
+            'site_titulo' => 'Consumidores'
         ]
     ]);
 
@@ -309,7 +309,7 @@ $app->get('/admin/consumidores/alterar/{idconsumidor}', function (Request $reque
             'header'  => false,
             'sub_res' => true,
             'data' => [
-                'site_titulo' => 'Consumidors',
+                'site_titulo' => 'Consumidores',
             ]
         ]);
 
