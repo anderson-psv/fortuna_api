@@ -25,6 +25,8 @@ class UsuarioAdmin implements iModel
         'status'
     ];
 
+    private int $id = -1;
+
     private string $nome   = '';
     private string $email  = '';
     private string $senha  = '';
@@ -191,7 +193,7 @@ class UsuarioAdmin implements iModel
                     return $id;
                 }
 
-                throw new Exception("Erro ao inserir produto", 7400);
+                throw new Exception("Erro ao inserir usuario", 7400);
             }
 
             //Update
@@ -206,7 +208,7 @@ class UsuarioAdmin implements iModel
             $msg = "Erro ao atualizar dados do produto";
 
             if ($is_insert) {
-                $msg = "Erro ao salvar dados do produto";
+                $msg = "Erro ao salvar dados do usuario";
             }
             throw new Exception($msg, 7400);
         }
