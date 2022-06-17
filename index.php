@@ -7,7 +7,7 @@ define('BASE_DIR', __DIR__);
 define('LAZER_DATA_PATH', BASE_DIR . '/database/');
 define('ID_HASH', '$2y$14$');
 
-ini_set("error_log", BASE_DIR . "/log/php-error.log");
+ini_set("error_log", BASE_DIR . "/log/php-error".date('Ymd').".log");
 
 use Fortuna\Logger;
 use Fortuna\Db\FileDb;
