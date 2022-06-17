@@ -25,7 +25,7 @@ class PageAdmin
         }
 
         if ($opts['sub_res']) {
-            $opts['data']['res_path'] = './../../res/admin/';
+            $opts['data']['res_path'] = './../../../res/admin/';
         } else {
             $opts['data']['res_path'] = './../res/admin/';
         }
