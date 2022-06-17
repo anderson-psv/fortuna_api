@@ -20,7 +20,7 @@ class PageEcommerce
         $opts['data']['consumidor_logado'] = Consumidor::checklogin();
         $opts['data']['consumidor_nome']   = Consumidor::getFromSession('nome');
 
-        $opts['data']['res_path'] = './res/';
+        $opts['data']['res_path'] = './../res/';
         $this->options = array_merge($this->defaults, $opts);
 
         $config = array(
