@@ -354,3 +354,27 @@ $app->post('/admin/usuario/alterar/{idusuario}', function (Request $request, Res
 
     return $response->withStatus(200);
 });
+
+$app->post('/admin/usuario/remover/{idusuario}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $idusuario = $request->getAttribute('idusuario');
+        $usuario = (new UsuarioAdmin());
+        if (!$usuario->delete($idusuario)) {
+            throw new Exception('Erro ao remover usuario', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Usuario removido com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
