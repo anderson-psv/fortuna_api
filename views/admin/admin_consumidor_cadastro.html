@@ -56,33 +56,34 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input type="text" class="form-control" id="nome" placeholder="Nome" required>
+                    <form action="javascript:inserirConsumidor()">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" placeholder="Nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="senha">Senha</label>
+                                <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="custom-select rounded-50" id="status" required>
+                                    <option>ATIVO</option>
+                                    <option>INATIVO</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="senha">Senha</label>
-                            <input type="password" class="form-control" id="senha" placeholder="Senha" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="custom-select rounded-50" id="status">
-                                <option>ATIVO</option>
-                                <option>INATIVO</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
+                        <!-- /.card-body -->
 
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-primary"
-                            onclick="javascript:inserirConsumidor()">Submit</button>
-                    </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.card -->
             </div>
