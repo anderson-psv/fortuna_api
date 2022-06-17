@@ -30,6 +30,8 @@ class Consumidor implements iModel
     private string $email = '';
     private string $senha = '';
 
+    private bool $ignorar_senha = false;
+
     function __construct(array $dados = [])
     {
         if ($dados) {
@@ -57,6 +59,10 @@ class Consumidor implements iModel
         $dados = [];
         foreach (self::$campos_db as $campo) {
             $dados[$campo] = $this->$campo;
+        }
+
+        if ($this->ignorar_senha) {
+            unset($dados['senha']);
         }
 
         return $dados;
@@ -154,11 +160,15 @@ class Consumidor implements iModel
     public function save()
     {
         $this->validarDados();
+        $this->verificarEmailUnico();
 
         $is_insert = ($this->id < 0);
         $table     = Lazer::table(self::$tabela_db);
         try {
             if ($is_insert) {
+                if ($this->ignorar_senha) {
+                    throw new Exception("Obrigatório senha no cadastro!", 7400);
+                }
                 $table->set($this->getDados());
                 $table->insert();
                 if ($id = $table->getField('id')) {
@@ -347,5 +357,35 @@ class Consumidor implements iModel
     public static function clearSuccess()
     {
         $_SESSION[self::SUCCESS] = NULL;
+    }
+
+    public function verificarEmailUnico()
+    {
+        try {
+            $table = Lazer::table(self::$tabela_db);
+
+            if ($this->id) {
+                $table->where('id', '!=', $this->id);
+            }
+
+            $ja_existe = $table
+                ->andwhere('email', '=', $this->email)
+                ->limit(1)
+                ->findAll()
+                ->asArray();
+            if (!$ja_existe) {
+                return true;
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage());
+        }
+
+        throw new Exception("Email já cadastrado!", 7400);
+    }
+
+    public function setIgnorarSenha()
+    {
+        $this->ignorar_senha = true;
+        return $this;
     }
 }
