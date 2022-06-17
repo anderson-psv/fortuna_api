@@ -214,15 +214,17 @@ class UsuarioAdmin implements iModel
         }
     }
 
-    public function delete(string $idconsumidor)
+    public function delete(string $idusuario)
     {
         try {
             $row = Lazer::table(self::$tabela_db)
-                ->where('id', '=', $idconsumidor);
+                ->where('id', '=', $idusuario);
 
             if (!$row->delete()) {
                 throw new Exception("Não foi possivel deletar o usuário!", 7400);
             }
+
+            return true;
         } catch (\Throwable $th) {
             throw new Exception("Erro ao deletar usuário", 7400);
         }

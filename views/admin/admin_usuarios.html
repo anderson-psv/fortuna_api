@@ -26,7 +26,6 @@
                 success: function (data) {
                     console.log(data)
                     if (data.status == "success") {
-                        window.alert("Usuario Removido");
                         window.location.href = "/admin/usuarios";
                     } else {
                         window.alert(data.message);
