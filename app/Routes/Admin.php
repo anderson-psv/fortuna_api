@@ -2,6 +2,7 @@
 
 use Fortuna\PageAdmin;
 use Fortuna\Model\Produto;
+use Fortuna\Model\Consumidor;
 use Fortuna\Model\UsuarioAdmin;
 use Lazer\Classes\Database as Lazer;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -218,6 +219,164 @@ $app->post('/admin/produto/remover/{idproduto}', function (Request $request, Res
 
     return $response->withStatus(200);
 });
+$app->get('/admin/consumidores', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    $consumidores = Lazer::table(Consumidor::$tabela_db)
+        ->findAll()
+        ->asArray();
+
+    foreach ($consumidores as &$consumidor) {
+        unset($consumidor['senha']);
+    }
+
+    $page = new PageAdmin([
+        'header'  => false,
+        'sub_res' => true,
+        'data' => [
+            'site_titulo' => 'Consumidors'
+        ]
+    ]);
+
+    $page->setTpl("admin_consumidores", [
+        'consumidores' => $consumidores
+    ]);
+
+    return $response->withStatus(200);
+});
+
+$app->get('/admin/consumidores/cadastro', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    $page = new PageAdmin([
+        'header'  => false,
+        'sub_res' => true,
+        'data' => [
+            'site_titulo' => 'Consumidors'
+        ]
+    ]);
+
+    $page->setTpl("admin_consumidor_cadastro");
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/consumidor/cadastro', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $dados   = json_decode($request->getBody()->getContents(), true);
+        $consumidor = new Consumidor($dados);
+
+        if (!$consumidor->save()) {
+            throw new \Exception('Erro ao salvar consumidor!', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Consumidor cadastrado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+
+$app->get('/admin/consumidores/alterar/{idconsumidor}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $idconsumidor = (int) $request->getAttribute('idconsumidor');
+
+        if (empty($idconsumidor)) {
+            throw new Exception('ID consumidor inváldo', 7400);
+        }
+
+        $db_consumidor = (new Consumidor())
+            ->getUsuarioDb($idconsumidor)
+            ->getDados();
+
+        if (!$db_consumidor) {
+            throw new Exception('Consumidor não encontrado', 7400);
+        }
+
+        $page = new PageAdmin([
+            'header'  => false,
+            'sub_res' => true,
+            'data' => [
+                'site_titulo' => 'Consumidors',
+            ]
+        ]);
+
+        $page->setTpl("admin_consumidor_editar", $db_consumidor);
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/consumidor/alterar/{idconsumidor}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $idconsumidor = (int) $request->getAttribute('idconsumidor');
+        $dados     = json_decode($request->getBody()->getContents(), true);
+
+        $consumidor = (new Consumidor())
+            ->setId($idconsumidor)
+            ->setIgnorarSenha()
+            ->setDados($dados);
+
+        if (!$consumidor->save()) {
+            throw new \Exception('Erro ao salvar consumidor!', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Produto cadastrado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/consumidor/remover/{idconsumidor}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $idconsumidor = $request->getAttribute('idconsumidor');
+        $consumidor = (new Consumidor());
+        if (!$consumidor->delete($idconsumidor)) {
+            throw new Exception('Erro ao remover consumidor', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Consumidor removido com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
 
 $app->get('/admin/usuarios', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
@@ -289,7 +448,6 @@ $app->post('/admin/usuario/cadastro', function (Request $request, Response $resp
 
 $app->get('/admin/usuarios/alterar/{idusuario}', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
-
 
     try {
         $idusuario = (int) $request->getAttribute('idusuario');
