@@ -30,7 +30,6 @@
             }), // or JSON.stringify ({name: 'jonas'}),
             success: function (data) {
                 if (data.status == "success") {
-                    window.alert("Produto cadastrado");
                     window.location.href = "/admin/produtos";
                 } else {
                     window.alert(data.message);
