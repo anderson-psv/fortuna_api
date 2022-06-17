@@ -15,25 +15,27 @@
     <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css">
 </head>
 <script>
-    function editarProduto() {
-        $idproduto = '{$id}';
-        descricao = document.getElementById("descricao").value;
-        valor = document.getElementById("valor").value;
+    function editarUsuario() {
+        idusuario = '{$id}';
+        nome = document.getElementById("nome").value;
+        email = document.getElementById("email").value;
+        senha = document.getElementById("senha").value;
         status = document.getElementById("status").value;
 
         $.post({
             type: "POST",
-            url: "/admin/produto/alterar/" + $idproduto,
+            url: "/admin/usuario/alterar/" + idusuario,
             data: JSON.stringify({
-                descricao: descricao,
-                valor: valor,
+                nome: nome,
+                email: email,
+                senha: senha,
                 status: status
             }), // or JSON.stringify ({name: 'jonas'}),
             success: function (data) {
                 console.log(data)
                 if (data.status == "success") {
-                    window.alert("Produto Alteardo");
-                    window.location.href = "/admin/produtos";
+                    window.alert("Usuario alterado");
+                    window.location.href = "/admin/usuarios";
                 } else {
                     window.alert(data.message);
                 }
@@ -53,38 +55,43 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Alterar Produto</h3>
+                        <h3 class="card-title">Alterar Usuario</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="descricao">ID Produto: {$id}</label>
+                            <label for="descricao">ID Usuario: {$id}</label>
                         </div>
-                        <div class="form-group">
-                            <label for="descricao">Descrição</label>
-                            <input type="text" class="form-control" id="descricao" placeholder="Descrição" required
-                                value="{$descricao}">
-                        </div>
-                        <div class="form-group">
-                            <label for="valor">Valor(R$)</label>
-                            <input type="number" step="0,1" min="0" class="form-control" id="valor" placeholder="Valor"
-                                required value="{$valor}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="custom-select rounded-50" id="status">
-                                <option value="ATIVO">ATIVO</option>
-                                <option value="INATIVO">INATIVO</option>
-                            </select>
-                        </div>
+                        <form action="javascript:editarUsuario()">
+                            <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" placeholder="Nome" required
+                                    value="{$nome}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="email" placeholder="Email" required
+                                    value="{$email}">
+                            </div>
+                            <div class="form-group">
+                                <label for="senha">Senha</label>
+                                <input type="password" class="form-control" id="senha" placeholder="Senha" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="custom-select rounded-50" id="status">
+                                    <option>ATIVO</option>
+                                    <option>INATIVO</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.card-body -->
 
                     <div class="card-footer">
                         <button type="button" class="btn btn-primary"
-                            onclick="javascript:editarProduto()">Submit</button>
+                            onclick="javascript:editarUsuario()">Submit</button>
                     </div>
                 </div>
                 <!-- /.card -->
