@@ -23,7 +23,6 @@ $app->get('/admin', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/admin/login', function (Request $request, Response $response, $args) {
-
     $page = new PageAdmin([
         'header' => false,
         'footer' => false,
