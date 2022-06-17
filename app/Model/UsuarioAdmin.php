@@ -265,6 +265,7 @@ class UsuarioAdmin implements iModel
     {
         $db_usuario = Lazer::table(self::$tabela_db)
             ->where('email', '=', $email)
+            ->andWhere('status', '=', 'ATIVO')
             ->limit(1)
             ->findAll()
             ->asArray();

@@ -260,6 +260,7 @@ class Consumidor implements iModel
         $table      = Lazer::table(self::$tabela_db);
         $db_usuario = $table
             ->where('email', '=', $email)
+            ->andWhere('status', '=', 'ATIVO')
             ->find()
             ->asArray();
 
