@@ -128,11 +128,13 @@ class UsuarioAdmin implements iModel
                 throw new Exception("Informe a senha", 7400);
             }
 
+            $this->verificarEmailUnico($this->email);
+
             if (!Functions::isHash($this->senha)) {
                 $this->senha = Functions::getPasswordHash($this->senha);
             }
 
-            if(!in_array($this->status, ['ATIVO', 'INATIVO'])) {
+            if (!in_array($this->status, ['ATIVO', 'INATIVO'])) {
                 throw new Exception("Status inválido", 7400);
             }
         } catch (\Throwable $th) {
@@ -164,33 +166,37 @@ class UsuarioAdmin implements iModel
         }
     }
 
+
     public function save()
     {
         $this->validarDados();
 
-        $table = Lazer::table(self::$tabela_db);
-        $table->set($this->getDados());
-
-        $is_insert = !!$this->id;
-
+        $is_insert = ($this->id < 0);
+        $table     = Lazer::table(self::$tabela_db);
         try {
             if ($is_insert) {
-                if ($table->insert()) {
-                    return $table->getField('id');
+                $table->set($this->getDados());
+                $table->insert();
+                if ($id = $table->getField('id')) {
+                    return $id;
                 }
-                throw new Exception("Erro ao inserir usuário", 7400);
-            }
-            //Update
-            if ($table->save()) {
-                return $this->id;
+
+                throw new Exception("Erro ao inserir produto", 7400);
             }
 
-            throw new Exception("Erro ao atualizar usuário", 7400);
+            //Update
+            $table->find($this->id)
+                ->set($this->getDados());
+
+            $table->save();
+
+            return true;
         } catch (\Throwable $th) {
-            $msg = "Erro ao atualizar dados do usuário";
+            error_log($th->getMessage());
+            $msg = "Erro ao atualizar dados do produto";
 
             if ($is_insert) {
-                $msg = "Erro ao salvar dados do usuário";
+                $msg = "Erro ao salvar dados do produto";
             }
             throw new Exception($msg, 7400);
         }
@@ -370,5 +376,22 @@ class UsuarioAdmin implements iModel
         return password_hash($password, PASSWORD_DEFAULT, [
             'cost' => 14
         ]);
+    }
+
+    public function verificarEmailUnico(string $email)
+    {
+        try {
+            $ja_existe = Lazer::table(self::$tabela_db)
+                ->where('email', '=', $email)
+                ->limit(1)
+                ->findAll()
+                ->asArray();
+            if (!$ja_existe) {
+                return true;
+            }
+        } catch (\Throwable $th) {
+            error_log($th->getMessage());
+        }
+        throw new Exception("Email já cadastrado!", 7400);
     }
 }
