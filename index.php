@@ -77,5 +77,5 @@ if ($files = opendir('app/Routes/')) {
     exit;
 }
 
-$page = new Fortuna\Page();
+$page = new Fortuna\PageEcommerce();
 $page->setTpl('site_indisponivel');
