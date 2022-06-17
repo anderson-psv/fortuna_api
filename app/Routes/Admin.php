@@ -238,7 +238,6 @@ $app->get('/admin/usuarios', function (Request $request, Response $response, $ar
         ]
     ]);
 
-    var_dump($usuarios);
     $page->setTpl("admin_usuarios", [
         'usuarios' => $usuarios
     ]);
@@ -268,6 +267,75 @@ $app->post('/admin/usuario/cadastro', function (Request $request, Response $resp
     try {
         $dados   = json_decode($request->getBody()->getContents(), true);
         $usuario = new UsuarioAdmin($dados);
+
+        if (!$usuario->save()) {
+            throw new \Exception('Erro ao salvar usuario!', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Produto cadastrado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+
+$app->get('/admin/usuarios/alterar/{idusuario}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+
+    try {
+        $idusuario = (int) $request->getAttribute('idusuario');
+
+        if (empty($idusuario)) {
+            throw new Exception('ID usuario inváldo', 7400);
+        }
+
+        $db_usuario = (new UsuarioAdmin())
+            ->getUsuarioDb($idusuario)
+            ->getDados();
+
+        if (!$db_usuario) {
+            throw new Exception('Usuario não encontrado', 7400);
+        }
+
+        $page = new PageAdmin([
+            'header'  => false,
+            'sub_res' => true,
+            'data' => [
+                'site_titulo' => 'Usuarios',
+            ]
+        ]);
+
+        $page->setTpl("admin_usuario_editar", $db_usuario);
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/usuario/alterar/{idusuario}', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $idusuario = (int) $request->getAttribute('idusuario');
+        $dados     = json_decode($request->getBody()->getContents(), true);
+
+        $usuario = (new UsuarioAdmin())
+            ->setId($idusuario)
+            ->setIgnorarSenha()
+            ->setDados($dados);
 
         if (!$usuario->save()) {
             throw new \Exception('Erro ao salvar usuario!', 7400);
