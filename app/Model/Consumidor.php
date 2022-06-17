@@ -14,7 +14,8 @@ class Consumidor implements iModel
         'id',
         'nome',
         'email',
-        'senha'
+        'senha',
+        'status'
     ];
 
     const SESSION        = "Consumidor";
@@ -29,6 +30,7 @@ class Consumidor implements iModel
     private string $nome  = '';
     private string $email = '';
     private string $senha = '';
+    private string $status = '';
 
     private bool $ignorar_senha = false;
 
@@ -112,6 +114,17 @@ class Consumidor implements iModel
         return $this->nome;
     }
 
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
     public function validarDados()
     {
         try {
@@ -123,12 +136,14 @@ class Consumidor implements iModel
                 throw new Exception("Informe o e-mail", 7400);
             }
 
-            if (empty($this->senha)) {
-                throw new Exception("Informe a senha", 7400);
-            }
+            if (!$this->ignorar_senha) {
+                if (empty($this->senha)) {
+                    throw new Exception("Informe a senha", 7400);
+                }
 
-            if (!Functions::isHash($this->senha)) {
-                $this->senha = Functions::getPasswordHash($this->senha);
+                if (!Functions::isHash($this->senha)) {
+                    $this->senha = Functions::getPasswordHash($this->senha);
+                }
             }
         } catch (\Throwable $th) {
             error_log($th->getMessage());
@@ -140,10 +155,11 @@ class Consumidor implements iModel
     {
         try {
             $db_user = Lazer::table(self::$tabela_db)
-                ->where('idusuario', '=', $idusuario)
-                ->find()
+                ->where('id', '=', $idusuario)
+                ->findAll()
                 ->asArray();
 
+            $db_user = $db_user[0] ?: [];
             if (!$db_user) {
                 throw new Exception("Usuário não encontrado", 7400);
             }
