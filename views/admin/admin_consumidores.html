@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{$site_titulo}</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{$res_path}plugins/fontawesome-free/css/all.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{$res_path}dist/css/adminlte.min.css" />
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{$res_path}plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+</head>
+
+<script>
+    function removerConsumidor($idconsumidor) {
+        if (confirm("Deseja remover o consumidor?")) {
+            $.post({
+                type: "POST",
+                url: "/admin/consumidor/remover/" + $idconsumidor,
+                success: function (data) {
+                    console.log(data)
+                    if (data.status == "success") {
+                        window.location.href = "/admin/consumidores";
+                    } else {
+                        window.alert(data.message);
+                    }
+                },
+                contentType: "application/json",
+                dataType: "json"
+            });
+        }
+    }
+</script>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Consumidors Admin</h3>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-primary float-left"
+                                onclick="window.location.href = '/admin/consumidores/cadastro'">
+                                Adicionar Consumidor
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loop="$consumidores"}
+                                    <tr>
+                                        <td>{$value.id}</td>
+                                        <td>{$value.nome}</td>
+                                        <td>{$value.email}</td>
+                                        <td>
+                                            {if="$value.status == 'ATIVO'"}
+                                            <span class="badge badge-success">ATIVO</span>
+                                            {else}
+                                            <span class="badge badge-danger">INATIVO</span>
+                                            {/if}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#modal-default"
+                                                onclick="window.location.href = '/admin/consumidores/alterar/{$value.id}'">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="buton" class="btn btn-danger"
+                                                onclick="javascript:removerConsumidor('{$value.id}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {/loop}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div2>
+<!-- /.content-wrapper -->
