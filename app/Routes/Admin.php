@@ -76,7 +76,6 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
 
     $page = new PageAdmin([
         'header' => false,
-
         'data' => [
             'site_titulo' => 'Produtos'
         ]
@@ -89,12 +88,11 @@ $app->get('/admin/produtos', function (Request $request, Response $response, $ar
     return $response->withStatus(200);
 });
 
-$app->get('/admin/produto/cadastro', function (Request $request, Response $response, $args) {
+$app->get('/admin/produtos/cadastro', function (Request $request, Response $response, $args) {
     UsuarioAdmin::checkLogin('/admin/login');
 
     $page = new PageAdmin([
         'header' => false,
-        'footer' => false,
         'sub_res' => true,
         'data' => [
             'site_titulo' => 'Cadastrar Produto'
@@ -147,7 +145,6 @@ $app->get('/admin/produtos/alterar/{idproduto}', function (Request $request, Res
 
     $page = new PageAdmin([
         'header'  => false,
-        'footer'  => false,
         'sub_res' => true,
         'data' => [
             'site_titulo' => 'Alterar Produto'
@@ -213,6 +210,26 @@ $app->post('/admin/produto/remover/{idproduto}', function (Request $request, Res
             'message' => $th->getMessage()
         ]));
     }
+
+    return $response->withStatus(200);
+});
+
+$app->get('/admin/usuarios', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    $usuarios = Lazer::table(UsuarioAdmin::$tabela_db)
+        ->findAll()
+        ->asArray();
+
+    $page = new PageAdmin([
+        'header'  => false,
+        'sub_res' => true,
+        'data' => [
+            'site_titulo' => 'Usuarios'
+        ]
+    ]);
+
+    $page->setTpl("admin_usuarios", $usuarios);
 
     return $response->withStatus(200);
 });

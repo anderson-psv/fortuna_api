@@ -44,58 +44,56 @@
     }
 </script>
 
-<body class="hold-transition sidebar-mini layout-fixed dark-mode" data-panel-auto-height-mode="height">
-    <!-- Main content -->
-    <section class="content dark-mode">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- left column -->
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Alterar Produto</h3>
+<!-- Main content -->
+<section class="content dark-mode">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Alterar Produto</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="descricao">ID Produto: {$id}</label>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="descricao">ID Produto: {$id}</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="descricao">Descrição</label>
-                                <input type="text" class="form-control" id="descricao" placeholder="Descrição" required
-                                    value="{$descricao}">
-                            </div>
-                            <div class="form-group">
-                                <label for="valor">Valor(R$)</label>
-                                <input type="number" step="0,1" min="0" class="form-control" id="valor"
-                                    placeholder="Valor" required value="{$valor}">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="custom-select rounded-50" id="status">
-                                    <option value="ATIVO">ATIVO</option>
-                                    <option value="INATIVO">INATIVO</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="descricao">Descrição</label>
+                            <input type="text" class="form-control" id="descricao" placeholder="Descrição" required
+                                value="{$descricao}">
                         </div>
-                        <!-- /.card-body -->
+                        <div class="form-group">
+                            <label for="valor">Valor(R$)</label>
+                            <input type="number" step="0,1" min="0" class="form-control" id="valor" placeholder="Valor"
+                                required value="{$valor}">
+                        </div>
 
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-primary"
-                                onclick="javascript:editarProduto()">Submit</button>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="custom-select rounded-50" id="status">
+                                <option value="ATIVO">ATIVO</option>
+                                <option value="INATIVO">INATIVO</option>
+                            </select>
                         </div>
                     </div>
-                    <!-- /.card -->
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary"
+                            onclick="javascript:editarProduto()">Submit</button>
+                    </div>
                 </div>
                 <!-- /.card -->
             </div>
-            <!--/.col (right) -->
+            <!-- /.card -->
         </div>
-        <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</body>
+        <!--/.col (right) -->
+    </div>
+    <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
