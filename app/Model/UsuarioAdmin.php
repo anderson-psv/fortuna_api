@@ -30,6 +30,8 @@ class UsuarioAdmin implements iModel
     private string $senha  = '';
     private string $status = '';
 
+    private bool $ignorar_senha = false;
+
     public function setDados(array $dados, bool $validar = true)
     {
         foreach (self::$campos_db as $campo) {
@@ -57,6 +59,10 @@ class UsuarioAdmin implements iModel
         $dados = [];
         foreach (self::$campos_db as $campo) {
             $dados[$campo] = $this->$campo;
+        }
+
+        if ($this->ignorar_senha) {
+            unset($dados['senha']);
         }
 
         return $dados;
@@ -124,12 +130,14 @@ class UsuarioAdmin implements iModel
                 throw new Exception("Informe o e-mail", 7400);
             }
 
-            if (empty($this->senha)) {
-                throw new Exception("Informe a senha", 7400);
-            }
+            if (!$this->ignorar_senha) {
+                if (empty($this->senha)) {
+                    throw new Exception("Informe a senha", 7400);
+                }
 
-            if (!Functions::isHash($this->senha)) {
-                $this->senha = Functions::getPasswordHash($this->senha);
+                if (!Functions::isHash($this->senha)) {
+                    $this->senha = Functions::getPasswordHash($this->senha);
+                }
             }
 
             if (!in_array($this->status, ['ATIVO', 'INATIVO'])) {
@@ -174,6 +182,9 @@ class UsuarioAdmin implements iModel
         $table     = Lazer::table(self::$tabela_db);
         try {
             if ($is_insert) {
+                if ($this->ignorar_senha) {
+                    throw new Exception("Obrigatório senha no cadastro!", 7400);
+                }
                 $table->set($this->getDados());
                 $table->insert();
                 if ($id = $table->getField('id')) {
@@ -371,13 +382,6 @@ class UsuarioAdmin implements iModel
     }
     /* Sucesso Fim*/
 
-    public static function getPasswordHash($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT, [
-            'cost' => 14
-        ]);
-    }
-
     public function verificarEmailUnico(string $email)
     {
         try {
@@ -393,5 +397,11 @@ class UsuarioAdmin implements iModel
             error_log($th->getMessage());
         }
         throw new Exception("Email já cadastrado!", 7400);
+    }
+
+    public function setIgnorarSenha()
+    {
+        $this->ignorar_senha = true;
+        return $this;
     }
 }
