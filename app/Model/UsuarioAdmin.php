@@ -128,8 +128,6 @@ class UsuarioAdmin implements iModel
                 throw new Exception("Informe a senha", 7400);
             }
 
-            $this->verificarEmailUnico($this->email);
-
             if (!Functions::isHash($this->senha)) {
                 $this->senha = Functions::getPasswordHash($this->senha);
             }
@@ -170,6 +168,7 @@ class UsuarioAdmin implements iModel
     public function save()
     {
         $this->validarDados();
+        $this->verificarEmailUnico($this->email);
 
         $is_insert = ($this->id < 0);
         $table     = Lazer::table(self::$tabela_db);
@@ -260,6 +259,8 @@ class UsuarioAdmin implements iModel
         if (!$db_usuario) {
             $num_usuarios = Lazer::table(self::$tabela_db)->count();
             if ($num_usuarios == 0) {
+                error_log('teste123');
+
                 $usuario = new self([
                     'nome' => 'Administrador',
                     'email' => $email,
