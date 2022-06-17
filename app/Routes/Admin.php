@@ -233,3 +233,48 @@ $app->get('/admin/usuarios', function (Request $request, Response $response, $ar
 
     return $response->withStatus(200);
 });
+
+$app->get('/admin/usuarios/cadastro', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    $usuarios = Lazer::table(UsuarioAdmin::$tabela_db)
+        ->findAll()
+        ->asArray();
+
+    $page = new PageAdmin([
+        'header'  => false,
+        'sub_res' => true,
+        'data' => [
+            'site_titulo' => 'Usuarios'
+        ]
+    ]);
+
+    $page->setTpl("admin_usuario_cadastro", $usuarios);
+
+    return $response->withStatus(200);
+});
+
+$app->post('/admin/usuario/cadastro', function (Request $request, Response $response, $args) {
+    UsuarioAdmin::checkLogin('/admin/login');
+
+    try {
+        $dados   = json_decode($request->getBody()->getContents(), true);
+        $usuario = new UsuarioAdmin($dados);
+
+        if (!$usuario->save()) {
+            throw new \Exception('Erro ao salvar usuario!', 7400);
+        }
+
+        $response->getBody()->write(json_encode([
+            'status'  => 'success',
+            'message' => 'Produto cadastrado com sucesso!'
+        ]));
+    } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $th->getMessage()
+        ]));
+    }
+
+    return $response->withStatus(200);
+});

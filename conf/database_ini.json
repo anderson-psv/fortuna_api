@@ -2,12 +2,14 @@
     "f_usuario_admin": {
         "nome": "string",
         "email": "string",
-        "senha": "string"
+        "senha": "string",
+        "status": "string"
     },
     "f_consumidor": {
         "nome": "string",
         "email": "string",
-        "senha": "string"
+        "senha": "string",
+        "status": "string"
     },
     "f_produto": {
         "descricao": "string",

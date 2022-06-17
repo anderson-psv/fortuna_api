@@ -21,12 +21,14 @@ class UsuarioAdmin implements iModel
         'id',
         'nome',
         'email',
-        'senha'
+        'senha',
+        'status'
     ];
 
-    private string $nome  = '';
-    private string $email = '';
-    private string $senha = '';
+    private string $nome   = '';
+    private string $email  = '';
+    private string $senha  = '';
+    private string $status = '';
 
     public function setDados(array $dados, bool $validar = true)
     {
@@ -104,6 +106,17 @@ class UsuarioAdmin implements iModel
         return $this->senha;
     }
 
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
     public function validarDados()
     {
         try {
@@ -117,6 +130,10 @@ class UsuarioAdmin implements iModel
 
             if (!Functions::isHash($this->senha)) {
                 $this->senha = Functions::getPasswordHash($this->senha);
+            }
+
+            if(!in_array($this->status, ['ATIVO', 'INATIVO'])) {
+                throw new Exception("Status inválido", 7400);
             }
         } catch (\Throwable $th) {
             error_log($th->getMessage());
