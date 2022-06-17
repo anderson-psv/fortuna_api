@@ -177,7 +177,7 @@ body, ul, li, p{
 }
 
 .textfield > input::placeholder{
-    color: #f2bc94;
+    color: #7e7e7e;
     font-size:13px;
 }
 
@@ -195,4 +195,8 @@ body, ul, li, p{
     font-weight:600;
     color:#f2f2f2;
     background-color: #30110d;
+}
+
+.btn-login:hover{
+    background-color: #4b231d;
 }
