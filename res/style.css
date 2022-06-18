@@ -17,7 +17,7 @@ body, ul, li, p{
     width: 100%;
 }
 
-.logotipo-header{
+.logotipo-header > img{
     Width:200px; 
 }
 
