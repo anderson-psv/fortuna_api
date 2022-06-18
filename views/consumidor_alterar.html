@@ -26,42 +26,46 @@
             });
         }
     </script>
-    <div class="col-md-6">
-        <div class="form-group">
-            <h1>Alterar</h1>
+    <div class="conteiner-form">
+        <div class="card-form">
+            <h1>Alterar Cadastro</h1>
             <form action="javascript:alterarConsumidor()" method="post" id="form_cadastro">
-                <label for="nome">Nome</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="nome"
-                    name="nome"
-                    placeholder="Nome"
-                    value="{$nome}"
-                />
-                <br />
-                <label for="email">Email</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    value="{$email}"
-                />
-                <br />
-                <label for="senha">Senha</label>
-                <input
-                    type="password"
-                    required
-                    class="form-control"
-                    id="senha"
-                    name="senha"
-                    placeholder="Senha"
-                />
-                <br>
-                <button type="submit" class="btn btn-primary">Alterar</button>
+                <div class="textfield">
+                    <label for="nome">Nome</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="nome"
+                        name="nome"
+                        placeholder="Novo nome:"
+                        value="{$nome}"
+                    />
+                </div>
+                <div class="textfield">
+                    <label for="email">Email</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Novo email:"
+                        value="{$email}"
+                    />
+                </div>
+                <div class="textfield">
+                    <label for="senha">Senha</label>
+                    <input
+                        type="password"
+                        required
+                        class="form-control"
+                        id="senha"
+                        name="senha"
+                        placeholder="Nova senha:"
+                    />
+                </div>
+                <button class="btn-login" type="submit">Alterar</button>
             </form>
+            <a href="/">Página Inicial</a>
         </div>
     </div>
 </div>

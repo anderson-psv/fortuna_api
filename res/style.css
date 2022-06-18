@@ -101,6 +101,16 @@ body, ul, li, p{
     text-align: center;
 }
 
+.row-contato {
+    height: 100vh;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    text-align: center;
+}
+
 .dados {
     padding: 10px;
     display: grid;
