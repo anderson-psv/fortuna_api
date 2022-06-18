@@ -159,6 +159,10 @@ body, ul, li, p{
     color:#30110d
 }
 
+.card-login > p{
+    margin-top:15px;
+}
+
 .card-login > a{
     text-decoration: underline;
     margin-top:5px;
