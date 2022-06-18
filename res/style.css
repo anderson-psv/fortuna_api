@@ -153,14 +153,15 @@ body, ul, li, p{
 
 .card-login > h1{
     justify-content: center;
-    margin-bottom:0px;
+    margin-bottom:5px;
     text-transform: uppercase;
     color:#30110d
 }
 
 .card-login > a{
     text-decoration: underline;
-    color:#30110d
+    margin-top:5px;
+    color:#30110d;
 }
 
 .textfield{
