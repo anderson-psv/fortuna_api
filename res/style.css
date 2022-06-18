@@ -18,7 +18,11 @@ body, ul, li, p{
 }
 
 .logotipo-header > img{
-    Width:200px; 
+    Width:150px;
+    height:85px; 
+    display: flex;
+    align-content: center;
+    flex-direction: column;
 }
 
 .menu {
