@@ -153,6 +153,7 @@ body, ul, li, p{
 
 .card-login > h1{
     justify-content: center;
+    margin-bottom:0px;
     text-transform: uppercase;
     color:#30110d
 }
