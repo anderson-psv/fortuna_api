@@ -153,11 +153,13 @@ body, ul, li, p{
 
 .card-login > h1{
     justify-content: center;
+    text-transform: uppercase;
+    color:#30110d
 }
 
 .card-login > a{
     text-decoration: underline;
-
+    color:#30110d
 }
 
 .textfield{
@@ -202,6 +204,7 @@ body, ul, li, p{
     box-sizing: border-box;
     text-transform: uppercase;
     font-weight:600;
+    transition:all 0.3s;
     color:#f2f2f2;
     background-color: #30110d;
 }
