@@ -93,6 +93,7 @@ body, ul, li, p{
 
 .row {
     height: 100vh;
+    padding-top: 50px;
     display:flex;
     flex-direction: row;
     justify-content: center;
