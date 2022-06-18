@@ -111,6 +111,16 @@ body, ul, li, p{
     text-align: center;
 }
 
+.row-product {
+    height: 100vh;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: black;
+    text-align: center;
+}
+
 .dados {
     padding: 10px;
     display: grid;
@@ -239,4 +249,10 @@ body, ul, li, p{
     background-color: #4b231d;
     cursor:pointer;
     transition:all 0.3s;
+}
+
+.conteiner-product{
+    width:1000px;
+    height:350px;
+    border: 1px solid #000000;
 }
