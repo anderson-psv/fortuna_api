@@ -17,6 +17,10 @@ body, ul, li, p{
     width: 100%;
 }
 
+.logotipo-header{
+    Width:200px; 
+}
+
 .menu {
     display: flex;
     margin: 0px 10px 0px 10px;
