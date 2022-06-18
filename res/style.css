@@ -84,9 +84,9 @@ body, ul, li, p{
 }
 
 .row {
-    padding-top: 200px;
-    height: 535px;
-    border: 1px solid #30110d;
+    height: 100vh;
+    display:flex;
+    flex-direction: row;
     justify-content: center;
     color: black;
     text-align: center;
