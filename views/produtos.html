@@ -1,5 +1,15 @@
 <div class="row-product">
     <div class="conteiner-product">
+        {loop="$produtos"}
+            <div class="col-img">
+              <img src="{$value.id}" alt="imagem do produto">
+            </div>
+            <div class="col-description">
+              <p class="descricao-produto">Desc {$value.descricao}</p>
+              <p class="valor-produto">Valor {$value.valor}</p>
+            </div>
+        {/loop}
+        <!--
         <ul class="dados">
             {loop="$produtos"}
             <li>ID {$value.id}</li>
@@ -7,5 +17,6 @@
             <li>Valor {$value.valor}</li>
             {/loop}
         </ul>
+        -->
     </div>
 </div>
