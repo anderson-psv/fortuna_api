@@ -151,6 +151,15 @@ body, ul, li, p{
 
 }
 
+.card-login > h1{
+    justify-content: center;
+}
+
+.card-login > a{
+    text-decoration: underline;
+
+}
+
 .textfield{
     display:flex;
     flex-direction:column;
@@ -199,4 +208,6 @@ body, ul, li, p{
 
 .btn-login:hover{
     background-color: #4b231d;
+    cursor:pointer;
+    transition:all 0.3s;
 }
