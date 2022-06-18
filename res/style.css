@@ -139,7 +139,7 @@ body, ul, li, p{
     text-align: justify;
 }
 
-.conteiner-login{
+.conteiner-form{
     width:700px;
     display:flex;
     justify-content:center;
@@ -147,7 +147,7 @@ body, ul, li, p{
     margin:auto
 }
 
-.card-login{
+.card-form{
     background-color: #ddc4c2;
     width:60%;
     display:flex;
@@ -160,7 +160,7 @@ body, ul, li, p{
 
 }
 
-.card-login > h1{
+.card-form > h1{
     justify-content: center;
     margin:auto;
     margin-bottom:5px;
@@ -168,11 +168,11 @@ body, ul, li, p{
     color:#30110d
 }
 
-.card-login > p{
+.card-form > p{
     margin-top:20px;
 }
 
-.card-login > a{
+.card-form > a{
     text-decoration: underline;
     margin-top:5px;
     color:#30110d;

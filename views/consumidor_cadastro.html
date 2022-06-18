@@ -26,40 +26,45 @@
             });
         }
     </script>
-    <div class="col-md-6">
-        <div class="form-group">
+    <div class="conteiner-form">
+        <div class="card-form">
             <h1>Cadastro</h1>
             <form action="javascript:cadastrarConsumidor()" method="post" id="form_cadastro">
-                <label for="nome">Nome</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="nome"
-                    name="nome"
-                    placeholder="Nome"
-                />
-                <br />
-                <label for="email">Email</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                />
-                <br />
-                <label for="senha">Senha</label>
-                <input
-                    type="password"
-                    required
-                    class="form-control"
-                    id="senha"
-                    name="senha"
-                    placeholder="Senha"
-                />
-                <br>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <div class="textfield">
+                    <label for="nome">Nome</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="nome"
+                        name="nome"
+                        placeholder="Nome"
+                    />
+                </div>
+                <div class="textfield">
+                    <label for="email">Email</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                    />
+                </div>
+                <div class="textfield">
+                    <label for="senha">Senha</label>
+                    <input
+                        type="password"
+                        required
+                        class="form-control"
+                        id="senha"
+                        name="senha"
+                        placeholder="Senha"
+                    />
+                </div>
+                <button class="btn-login" type="submit">Cadastrar</button>
             </form>
+            <P>Já possui cadastro?</P>      
+            <a href="/consumidor/login">Realizar Login</a>
         </div>
     </div>
 </div>
