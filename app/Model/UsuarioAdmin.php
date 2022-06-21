@@ -276,9 +276,10 @@ class UsuarioAdmin implements iModel
             $num_usuarios = Lazer::table(self::$tabela_db)->findAll()->count();
             if ($num_usuarios == 0) {
                 $usuario = new self([
-                    'nome' => 'Administrador',
-                    'email' => $email,
-                    'senha' => $password
+                    'nome'   => 'Administrador',
+                    'email'  => $email,
+                    'senha'  => $password,
+                    'status' => 'ATIVO'
                 ]);
 
                 if ($usuario->save()) {
