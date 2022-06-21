@@ -14,7 +14,8 @@ class Produto implements iModel
         'id',
         'descricao',
         'valor',
-        'status'
+        'status',
+        'imagem'
     ];
 
     private int $id = -1;
@@ -99,19 +100,60 @@ class Produto implements iModel
         return $this->status;
     }
 
+    public function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
+        return $this;
+    }
+
+    public function getImagem()
+    {
+        return $this->imagem;
+    }
+
     public function validarDados()
     {
         try {
             if (empty($this->descricao)) {
-                throw new Exception('O campo descrição é obrigatório');
+                throw new Exception('O campo descrição é obrigatório', 7400);
             }
 
             if ($this->valor <= 0) {
-                throw new Exception('Informe um valor maior que zero');
+                throw new Exception('Informe um valor maior que zero', 7400);
             }
 
             if (!in_array($this->status, ['ATIVO', 'INATIVO'])) {
-                throw new Exception('Status inválido');
+                throw new Exception('Status inválido', 7400);
+            }
+
+            if (strpos($this->imagem, 'base64') !== false) {
+                if (strpos($this->imagem, 'data:image/') === false) {
+                    throw new Exception('Formato de imagem inválido', 7400);
+                }
+
+                $ext    = explode('/', mime_content_type($this->imagem))[1];
+                $base64 = explode(',', $this->imagem)[1];
+                if (strlen($base64) > 1000000) {
+                    throw new Exception('Tamanho da imagem excede o limite', 7400);
+                }
+
+                $img_dir = BASE_DIR . '/database/img/';
+                if (!is_dir($img_dir)) {
+                    mkdir($img_dir);
+                }
+
+                if ($this->id < 0) {
+                    $tmp_id = Lazer::table(self::$tabela_db)->lastId() + 1;
+                } else {
+                    $tmp_id = $this->id;
+                }
+
+                $file_path = $img_dir . 'produto_img_' . $tmp_id . '.' . $ext;
+                if (!file_put_contents($file_path, base64_decode($base64))) {
+                    throw new Exception('Erro ao salvar imagem!', 7400);
+                };
+
+                $this->imagem = $file_path;
             }
         } catch (Exception $e) {
             error_log($e->getMessage());

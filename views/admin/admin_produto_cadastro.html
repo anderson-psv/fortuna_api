@@ -18,7 +18,18 @@
     function inserirProduto() {
         descricao = document.getElementById("descricao").value;
         valor = document.getElementById("valor").value;
+        imagem = document.getElementById("imagem").files[0];
         status = document.getElementById("status").value;
+
+        if (imagem) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("img_64").value = e.target.result;
+            };
+
+            reader.readAsDataURL(imagem);
+            imagem = document.getElementById("img_64").value;
+        }
 
         $.post({
             type: "POST",
@@ -26,7 +37,8 @@
             data: JSON.stringify({
                 descricao: descricao,
                 valor: valor,
-                status: status
+                status: status,
+                imagem: imagem
             }), // or JSON.stringify ({name: 'jonas'}),
             success: function (data) {
                 if (data.status == "success") {
@@ -54,7 +66,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="javascript:inserirProduto()">
+                    <form action="javascript:inserirProduto()" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="descricao">Descrição</label>
@@ -72,6 +84,14 @@
                                     <option value="ATIVO">ATIVO</option>
                                     <option value="INATIVO">INATIVO</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="btn btn-default btn-file">
+                                    <i class="fas fa-image"></i> Imagem
+                                    <input type="file" id="imagem" name="imagem">
+                                    <input type="hidden" id="img_64">
+                                </div>
+                                <p class="help-block">Max. 32MB</p>
                             </div>
                         </div>
                         <!-- /.card-body -->
