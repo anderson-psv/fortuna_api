@@ -19,7 +19,18 @@
         $idproduto = '{$id}';
         descricao = document.getElementById("descricao").value;
         valor = document.getElementById("valor").value;
+        imagem = document.getElementById("imagem").files[0];
         status = document.getElementById("status").value;
+
+        if (imagem) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("img_64").value = e.target.result;
+            };
+
+            reader.readAsDataURL(imagem);
+            imagem = document.getElementById("img_64").value;
+        }
 
         $.post({
             type: "POST",
@@ -70,13 +81,20 @@
                             <input type="number" step="0,1" min="0" class="form-control" id="valor" placeholder="Valor"
                                 required value="{$valor}">
                         </div>
-
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="custom-select rounded-50" id="status">
                                 <option value="ATIVO" {if="$status=='ATIVO'"} selected {/if}>ATIVO</option>
                                 <option value="INATIVO" {if="$status=='INATIVO'"} selected {/if}>INATIVO</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn btn-default btn-file">
+                                <i class="fas fa-image"></i> Imagem
+                                <input type="image" id="img_64" value="{$img_64}">
+                                <input type="file" id="imagem" name="imagem">
+                            </div>
+                            <p class="help-block">Max. 32MB</p>
                         </div>
                     </div>
                     <!-- /.card-body -->
