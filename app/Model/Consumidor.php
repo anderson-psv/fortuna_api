@@ -136,6 +136,11 @@ class Consumidor implements iModel
                 throw new Exception("Informe o e-mail", 7400);
             }
 
+            $this->status = $this->status ?? 'ATIVO';
+            if (!in_array($this->status, ['ATIVO', 'INATIVO'])) {
+                throw new Exception("Status inválido", 7400);
+            }
+
             if (!$this->ignorar_senha) {
                 if (empty($this->senha)) {
                     throw new Exception("Informe a senha", 7400);
