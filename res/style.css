@@ -54,7 +54,11 @@ body, ul, li, p{
 .home-row {
     display: flex;
     justify-content: space-around;
-    margin: 100px 0px 100px 0px;
+    margin: auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    width:1200px;
+    justify-content: space-between;
 
 }
 
@@ -89,6 +93,8 @@ body, ul, li, p{
     justify-content: space-around;
     text-align: center;
     padding: 50px;
+    margin: auto;
+    width:1200px
 }
 
 .row {
@@ -243,7 +249,7 @@ body, ul, li, p{
 
 .row-product {
     height: 350px;
-    padding-top: 85px;
+    padding-top: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -261,24 +267,29 @@ body, ul, li, p{
     box-sizing: border-box;
     box-shadow: 0px 10px 20px  #2b282856;
     display:flex;
+    justify-content: center;
 }
 
 .col-img{
-    background-color: #7e7e7e;
-    width: 40%;
+    width: 300px;
 }
 
 .col-img > img {
-    
+    width:258px;
+    height:258px;
+    border-top-left-radius:20px; 
+    border-bottom-left-radius:20px;
 }
 
 .col-description {
-    background-color: aquamarine;
     width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    border: 1px solid #996c66;
+    border-top-right-radius:20px; 
+    border-bottom-right-radius:20px;
 }
 
 .descricao-produto {
@@ -290,4 +301,8 @@ body, ul, li, p{
 .valor-produto {
     font-size: 20px;
     font-weight: 600;
+}
+
+.espacamento {
+    padding: 50px;
 }
