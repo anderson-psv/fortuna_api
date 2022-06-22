@@ -247,9 +247,8 @@ class Consumidor implements iModel
         return [];
     }
 
-    public static function checkLogin($redirect_home = false)
+    public static function checkLogin($redirect_path = null)
     {
-        $retorno = true;
         if (
             !isset($_SESSION[self::SESSION])
             ||
@@ -257,15 +256,14 @@ class Consumidor implements iModel
             ||
             !(int)$_SESSION[self::SESSION]['id'] > 0
         ) {
-            $retorno = false;
+            if ($redirect_path) {
+                header('Location: ' . $redirect_path);
+                exit;
+            }
+            return false;
         }
 
-        if ($redirect_home) {
-            header('Location: /');
-            exit;
-        }
-
-        return $retorno;
+        return false;
     }
 
     public static function login($email, $password)
