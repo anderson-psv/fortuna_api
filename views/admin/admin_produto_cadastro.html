@@ -24,24 +24,19 @@
             return;
         }
 
-        preview.src = URL.createObjectURL(imagem);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(imagem);
     }
 
     function inserirProduto() {
         descricao = document.getElementById("descricao").value;
         valor = document.getElementById("valor").value;
-        imagem = document.getElementById("imagem").files[0];
         status = document.getElementById("status").value;
-
-        if (imagem) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById("img_64").value = e.target.result;
-            };
-
-            reader.readAsDataURL(imagem);
-            imagem = document.getElementById("img_64").value;
-        }
+        imagem = document.getElementById("imagem_preview").src;
 
         $.post({
             type: "POST",
@@ -109,8 +104,9 @@
                             </div>
                             <div class="form-group">
                                 <i class="fas fa-image"></i> Preview
-                                <img id="imagem_preview" style="max-width: 100%; max-height: 280px;"></img>
+                                <img id="imagem_preview" style="max-width: 100%; max-height: 280px; display: inline !important;"></img>
                             </div>
+                            
                         </div>
                         <!-- /.card-body -->
 
