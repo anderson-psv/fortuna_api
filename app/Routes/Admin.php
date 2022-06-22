@@ -68,7 +68,7 @@ $app->get('/admin/logout', function (Request $request, Response $response, $args
 });
 
 $app->get('/admin/produtos', function (Request $request, Response $response, $args) {
-    UsuarioAdmin::checkLogin();
+    UsuarioAdmin::checkLogin('/admin/login');
 
     $produtos = Lazer::table(Produto::$tabela_db)
         ->findAll()
