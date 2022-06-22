@@ -37,8 +37,17 @@ $app->get('/produtos', function (Request $request, Response $response, $args) {
 			->where('status', '=', 'ATIVO')
 			->findAll()
 			->asArray();
+
 		foreach ($produtos as &$produto) {
 			$produto['valor'] = number_format($produto['valor'], 2, ',', '.');
+
+			$imagem = $produto['imagem'] ?: '';
+
+            if ($imagem && is_file($imagem)) {
+                $type = pathinfo($imagem, PATHINFO_EXTENSION);
+                $data = file_get_contents($imagem);
+                $produto['imagem'] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            }
 		}
 	} catch (\Throwable $th) {
 		error_log($th->getMessage());
