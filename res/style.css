@@ -260,12 +260,34 @@ body, ul, li, p{
     border-radius:20px;
     box-sizing: border-box;
     box-shadow: 0px 10px 20px  #2b282856;
+    display:flex;
 }
 
 .col-img{
     background-color: #7e7e7e;
+    width: 40%;
 }
 
-.col-description{
+.col-img > img {
+    
+}
+
+.col-description {
     background-color: aquamarine;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.descricao-produto {
+    width: 450px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.valor-produto {
+    font-size: 20px;
+    font-weight: 600;
 }

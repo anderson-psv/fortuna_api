@@ -1,14 +1,13 @@
+{loop="$produtos"}
 <div class="row-product">
     <div class="conteiner-product">
-        {loop="$produtos"}
             <div class="col-img">
-              <img src="{$value.imagem}" alt="imagem do produto">
+              <img src="{$value.imagem}" style="width:100%; max-width: 100%;" alt="imagem do produto">
             </div>
             <div class="col-description">
-              <p class="descricao-produto">Desc {$value.descricao}</p>
-              <p class="valor-produto">Valor {$value.valor}</p>
+              <p class="descricao-produto">{$value.descricao}</p>
+              <p class="valor-produto">R$ {$value.valor}</p>
             </div>
-        {/loop}
         <!--
         <ul class="dados">
             {loop="$produtos"}
@@ -20,3 +19,4 @@
         -->
     </div>
 </div>
+{/loop}
