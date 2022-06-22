@@ -20,9 +20,11 @@ class Produto implements iModel
 
     private int $id = -1;
 
-    private string $descricao = '';
     private float $valor      = -1;
+
+    private string $descricao = '';
     private string $status    = '';
+    private string $imagem    = '';
 
     function __construct(array $dados = [])
     {
@@ -133,7 +135,9 @@ class Produto implements iModel
 
                 $ext    = explode('/', mime_content_type($this->imagem))[1];
                 $base64 = explode(',', $this->imagem)[1];
-                if (strlen($base64) > 1000000) {
+
+                $limite_kb = (32 * 1024); //32Mb
+                if (((int) (strlen(rtrim($base64, '=')) * 3 / 4) / 1024) > $limite_kb) {
                     throw new Exception('Tamanho da imagem excede o limite', 7400);
                 }
 
@@ -174,6 +178,14 @@ class Produto implements iModel
 
             if (!$db_produto) {
                 throw new Exception("Produto não encontrado", 7400);
+            }
+
+            $imagem = $db_produto['imagem'] ?: '';
+
+            if ($imagem && is_file($imagem)) {
+                $type = pathinfo($imagem, PATHINFO_EXTENSION);
+                $data = file_get_contents($imagem);
+                $db_produto['imagem'] = 'data:image/' . $type . ';base64,' . base64_encode($data);
             }
 
             $this->setDados($db_produto, false);
