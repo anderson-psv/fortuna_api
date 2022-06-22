@@ -263,7 +263,7 @@ class Consumidor implements iModel
             return false;
         }
 
-        return false;
+        return true;
     }
 
     public static function login($email, $password)
