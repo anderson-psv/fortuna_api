@@ -121,6 +121,11 @@ $app->post('/consumidor/alterar', function (Request $request, Response $response
         ]);
 
         $consumidor = new Consumidor($body);
+
+        if(empty($body['senha'])) {
+            $consumidor->setIgnorarSenha();
+        }
+        
         if (!$consumidor->save()) {
             throw new Exception("Não foi possível realizar a alteração!", 7400);
         }
